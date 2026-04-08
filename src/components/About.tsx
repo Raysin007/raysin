@@ -1,0 +1,46 @@
+const stats = [
+  { number: '3+', label: 'Years Experience' },
+  { number: '20+', label: 'Projects Shipped' },
+  { number: '10+', label: 'Happy Clients' },
+  { number: '∞', label: 'Coffee Consumed' },
+]
+
+export default function About() {
+  return (
+    <section id="about" className="section">
+      <div className="container">
+        <div className="about-grid">
+          <div className="about-avatar-wrap">
+            <div className="about-avatar">
+              <span className="about-avatar-inner"><img src="./rahul.png" alt="Rahul" /></span>
+            </div>
+            <div className="about-stats">
+              {stats.map(s => (
+                <div key={s.label} className="stat-card">
+                  <div className="stat-number">{s.number}</div>
+                  <div className="stat-label">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span className="section-label">About Me</span>
+            <h2 className="section-title">
+              Passionate about <span className="gradient-text">great software</span>
+            </h2>
+            <p className="section-desc" style={{ marginBottom: 20 }}>
+              I'm a full-stack developer based in the beautiful hills of Darjeeling who loves building
+              web applications that are both beautiful and functional. My focus is on
+              writing clean, maintainable code with a strong emphasis on user experience.
+            </p>
+            <p className="section-desc">
+              When I'm not coding, you'll find me capturing beautiful moments on my camera,
+              documenting my life, or spending quality time alone in the mountains.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
