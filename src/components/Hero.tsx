@@ -23,7 +23,7 @@ export default function Hero() {
           Available for freelancing work
         </div>
         <h1 className="hero-name">
-          Hi, I'm <span className="gradient-text">Raysin</span>
+          Hi, I'm <span className="gradient-text">राहुल</span>
         </h1>
         <p className="hero-role">Full-Stack Developer &amp; Photographer</p>
         <p className="hero-desc">
