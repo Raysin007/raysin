@@ -4,14 +4,23 @@ export default function Hero() {
 
   return (
     <section className="hero section">
-      <div className="hero-bg">
-        <div className="hero-orb hero-orb-1" />
-        <div className="hero-orb hero-orb-2" />
+      <div className="hero-video-bg">
+        <video
+          className="hero-video"
+          src="/darjeeling.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+        <div className="hero-video-overlay" />
       </div>
+
       <div className="container hero-content">
         <div className="hero-badge">
           <span className="hero-badge-dot" />
-          Available for freelance work
+          Available for freelancing work
         </div>
         <h1 className="hero-name">
           Hi, I'm <span className="gradient-text">Raysin</span>
