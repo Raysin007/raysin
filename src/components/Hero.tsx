@@ -1,6 +1,43 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+
 export default function Hero() {
+  const badgeRef = useRef<HTMLDivElement>(null)
+  const nameRef = useRef<HTMLHeadingElement>(null)
+  const roleRef = useRef<HTMLParagraphElement>(null)
+  const descRef = useRef<HTMLParagraphElement>(null)
+  const actionsRef = useRef<HTMLDivElement>(null)
+
   const scrollTo = (id: string) =>
     document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
+
+  useEffect(() => {
+    const tl = gsap.timeline({ delay: 0.6 })
+    tl.fromTo(badgeRef.current,
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
+    )
+    .fromTo(nameRef.current,
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
+      '-=0.3'
+    )
+    .fromTo(roleRef.current,
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
+      '-=0.4'
+    )
+    .fromTo(descRef.current,
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
+      '-=0.35'
+    )
+    .fromTo(actionsRef.current,
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' },
+      '-=0.3'
+    )
+  }, [])
 
   return (
     <section className="hero section">
@@ -18,19 +55,19 @@ export default function Hero() {
       </div>
 
       <div className="container hero-content">
-        <div className="hero-badge">
+        <div ref={badgeRef} className="hero-badge" style={{ opacity: 0 }}>
           <span className="hero-badge-dot" />
           Available for freelancing work
         </div>
-        <h1 className="hero-name">
+        <h1 ref={nameRef} className="hero-name" style={{ opacity: 0 }}>
           Hi, I'm <span className="gradient-text">राहुल</span>
         </h1>
-        <p className="hero-role">Full-Stack Developer &amp; Photographer</p>
-        <p className="hero-desc">
+        <p ref={roleRef} className="hero-role" style={{ opacity: 0 }}>Full-Stack Developer &amp; Photographer</p>
+        <p ref={descRef} className="hero-desc" style={{ opacity: 0 }}>
           I craft pixel-perfect web experiences with clean code and thoughtful design.
           Turning ideas into fast, accessible, and beautiful products.
         </p>
-        <div className="hero-actions">
+        <div ref={actionsRef} className="hero-actions" style={{ opacity: 0 }}>
           <a
             href="#projects"
             className="btn btn-primary"

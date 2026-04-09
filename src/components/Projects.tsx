@@ -1,3 +1,9 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 const projects = [
   {
     emoji: '🛒',
@@ -29,19 +35,52 @@ const projects = [
 ]
 
 export default function Projects() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(headerRef.current,
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current, start: 'top 95%', end: 'bottom 5%',
+            toggleActions: 'play reverse play reverse'
+          }
+        }
+      )
+      gsap.fromTo('.project-card',
+        { y: 60, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: '.projects-grid', start: 'top 95%', end: 'bottom 5%',
+            toggleActions: 'play reverse play reverse'
+          }
+        }
+      )
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="projects" className="section">
+    <section ref={sectionRef} id="projects" className="section">
       <div className="container">
-        <span className="section-label">My Work</span>
-        <h2 className="section-title">
-          Featured <span className="gradient-text">Projects</span>
-        </h2>
-        <p className="section-desc">
-          A selection of projects I've built — each one solving a real problem.
-        </p>
+        <div ref={headerRef} style={{ opacity: 0 }}>
+          <span className="section-label">My Work</span>
+          <h2 className="section-title">
+            Featured <span className="gradient-text">Projects</span>
+          </h2>
+          <p className="section-desc">
+            A selection of projects I've built — each one solving a real problem.
+          </p>
+        </div>
         <div className="projects-grid">
           {projects.map(p => (
-            <div key={p.title} className="project-card">
+            <div key={p.title} className="project-card" style={{ opacity: 0 }}>
               <div className="project-thumb" style={{ background: p.gradient }}>
                 {p.emoji}
               </div>

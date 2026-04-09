@@ -1,3 +1,9 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 const socials = [
   {
     label: 'GitHub',
@@ -29,10 +35,28 @@ const socials = [
 ]
 
 export default function Contact() {
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(cardRef.current,
+        { y: 50, opacity: 0, scale: 0.97 },
+        {
+          y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: cardRef.current, start: 'top 95%', end: 'bottom 5%',
+            toggleActions: 'play reverse play reverse'
+          }
+        }
+      )
+    })
+    return () => ctx.revert()
+  }, [])
+
   return (
     <section id="contact" className="section contact-bg">
       <div className="container">
-        <div className="contact-card">
+        <div ref={cardRef} className="contact-card" style={{ opacity: 0 }}>
           <span className="section-label">Get In Touch</span>
           <h2 className="section-title" style={{ marginBottom: 16 }}>
             Let's work <span className="gradient-text">together</span>

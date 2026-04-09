@@ -1,3 +1,9 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 const stats = [
   { number: '1+', label: 'Years Experience' },
   { number: '10+', label: 'Projects Shipped' },
@@ -6,15 +12,58 @@ const stats = [
 ]
 
 export default function About() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const avatarRef = useRef<HTMLDivElement>(null)
+  const textRef = useRef<HTMLDivElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(avatarRef.current,
+        { x: -60, opacity: 0 },
+        {
+          x: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: avatarRef.current, start: 'top 95%', end: 'bottom 5%',
+            toggleActions: 'play reverse play reverse'
+          }
+        }
+      )
+      gsap.fromTo(textRef.current,
+        { x: 60, opacity: 0 },
+        {
+          x: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: textRef.current, start: 'top 95%', end: 'bottom 5%',
+            toggleActions: 'play reverse play reverse'
+          }
+        }
+      )
+      gsap.fromTo('.stat-card',
+        { y: 30, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.5, ease: 'power3.out',
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: statsRef.current, start: 'top 95%', end: 'bottom 5%',
+            toggleActions: 'play reverse play reverse'
+          }
+        }
+      )
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="about" className="section">
+    <section ref={sectionRef} id="about" className="section">
       <div className="container">
         <div className="about-grid">
-          <div className="about-avatar-wrap">
+          <div ref={avatarRef} className="about-avatar-wrap" style={{ opacity: 0 }}>
             <div className="about-avatar">
               <span className="about-avatar-inner"><img src="./rahul.png" alt="Rahul" /></span>
             </div>
-            <div className="about-stats">
+            <div ref={statsRef} className="about-stats">
               {stats.map(s => (
                 <div key={s.label} className="stat-card">
                   <div className="stat-number">{s.number}</div>
@@ -24,7 +73,7 @@ export default function About() {
             </div>
           </div>
 
-          <div>
+          <div ref={textRef} style={{ opacity: 0 }}>
             <span className="section-label">About Me</span>
             <h2 className="section-title">
               Passionate about <span className="gradient-text">great software</span>
