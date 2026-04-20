@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
-    emoji: '🛒',
+    image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=600&h=400&fit=crop',
     gradient: 'linear-gradient(135deg, #7c3aed22, #06b6d422)',
     title: 'E-Commerce Platform',
     desc: 'Full-stack shopping app with auth, cart, payments and admin dashboard.',
@@ -15,7 +15,7 @@ const projects = [
     code: '#',
   },
   {
-    emoji: '💬',
+    image: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=400&fit=crop',
     gradient: 'linear-gradient(135deg, #06b6d422, #10b98122)',
     title: 'Real-time Chat App',
     desc: 'WebSocket-powered messenger with rooms, typing indicators and media sharing.',
@@ -24,7 +24,7 @@ const projects = [
     code: '#',
   },
   {
-    emoji: '📊',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
     gradient: 'linear-gradient(135deg, #f59e0b22, #ef444422)',
     title: 'Analytics Dashboard',
     desc: 'Interactive data visualization with real-time charts and filtering.',
@@ -82,7 +82,16 @@ export default function Projects() {
           {projects.map(p => (
             <div key={p.title} className="project-card" style={{ opacity: 0 }}>
               <div className="project-thumb" style={{ background: p.gradient }}>
-                {p.emoji}
+                <img 
+                  src={p.image} 
+                  alt={p.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0.8
+                  }}
+                />
               </div>
               <div className="project-body">
                 <div className="project-title">{p.title}</div>
