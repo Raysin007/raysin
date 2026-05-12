@@ -8,7 +8,7 @@ const stats = [
   { number: '1+', label: 'Years Experience' },
   { number: '10+', label: 'Projects Shipped' },
   { number: '10+', label: 'Happy Clients' },
-  { number: '∞', label: 'Coffee Consumed' },
+  { number: '24/7', label: 'Fueled by Coffee' },
 ]
 
 export default function About() {
@@ -20,32 +20,32 @@ export default function About() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(avatarRef.current,
-        { x: -60, opacity: 0 },
+        { x: -50, opacity: 0 },
         {
-          x: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+          x: 0, opacity: 1, duration: 1, ease: 'power3.out',
           scrollTrigger: {
-            trigger: avatarRef.current, start: 'top 95%', end: 'bottom 5%',
+            trigger: avatarRef.current, start: 'top 90%', end: 'bottom 10%',
             toggleActions: 'play reverse play reverse'
           }
         }
       )
       gsap.fromTo(textRef.current,
-        { x: 60, opacity: 0 },
+        { x: 50, opacity: 0 },
         {
-          x: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+          x: 0, opacity: 1, duration: 1, ease: 'power3.out',
           scrollTrigger: {
-            trigger: textRef.current, start: 'top 95%', end: 'bottom 5%',
+            trigger: textRef.current, start: 'top 90%', end: 'bottom 10%',
             toggleActions: 'play reverse play reverse'
           }
         }
       )
       gsap.fromTo('.stat-card',
-        { y: 30, opacity: 0 },
+        { y: 24, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 0.5, ease: 'power3.out',
-          stagger: 0.1,
+          stagger: 0.08,
           scrollTrigger: {
-            trigger: statsRef.current, start: 'top 95%', end: 'bottom 5%',
+            trigger: statsRef.current, start: 'top 92%', end: 'bottom 10%',
             toggleActions: 'play reverse play reverse'
           }
         }
@@ -61,22 +61,14 @@ export default function About() {
         <div className="about-grid">
           <div ref={avatarRef} className="about-avatar-wrap" style={{ opacity: 0 }}>
             <div className="about-avatar">
-              <span className="about-avatar-inner"><img src="./rahul.png" alt="Rahul" /></span>
-            </div>
-            <div ref={statsRef} className="about-stats">
-              {stats.map(s => (
-                <div key={s.label} className="stat-card">
-                  <div className="stat-number">{s.number}</div>
-                  <div className="stat-label">{s.label}</div>
-                </div>
-              ))}
+              <img src="./rahul.png" alt="Rahul — Full-stack developer from Darjeeling" />
             </div>
           </div>
 
-          <div ref={textRef} style={{ opacity: 0 }}>
+          <div ref={textRef} className="about-text" style={{ opacity: 0 }}>
             <span className="section-label">About Me</span>
             <h2 className="section-title">
-              Passionate about <span className="gradient-text">great software</span>
+              Passionate about <span className="accent-text">great software</span>
             </h2>
             <p className="section-desc" style={{ marginBottom: 20 }}>
               I'm a full-stack developer based in the beautiful hills of Darjeeling who loves building
@@ -87,6 +79,15 @@ export default function About() {
               When I'm not coding, you'll find me capturing beautiful moments on my camera,
               documenting my life, or spending quality time alone in the mountains.
             </p>
+
+            <div ref={statsRef} className="about-stats">
+              {stats.map(s => (
+                <div key={s.label} className="stat-card">
+                  <div className="stat-number">{s.number}</div>
+                  <div className="stat-label">{s.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

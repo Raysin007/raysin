@@ -15,14 +15,14 @@ export default function Navbar() {
   useEffect(() => {
     gsap.fromTo(
       navRef.current,
-      { y: -80, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.2 }
+      { y: -60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.3 }
     )
   }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -34,8 +34,12 @@ export default function Navbar() {
   return (
     <nav ref={navRef} className={`navbar${scrolled ? ' scrolled' : ''}`} style={{ opacity: 0 }}>
       <div className="container navbar-inner">
-        <a href="#" className="navbar-logo gradient-text" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          Raysin
+        <a
+          href="#"
+          className="navbar-logo"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          Ray<span>sin</span>
         </a>
 
         <ul className={`navbar-links${open ? ' open' : ''}`}>

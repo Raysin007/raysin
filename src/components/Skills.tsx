@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
@@ -10,52 +10,53 @@ import {
 import { TbApi } from 'react-icons/tb'
 import { MdAccessibility } from 'react-icons/md'
 import { RiSparkling2Fill } from 'react-icons/ri'
+import { LuCode, LuServer, LuPalette, LuRocket } from 'react-icons/lu'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const skills = [
   {
-    icon: '⚡',
+    Icon: LuCode,
     name: 'Frontend',
     desc: 'Building modern, responsive UIs',
     tags: [
-      { label: 'React',       Icon: SiReact,        color: '#61DAFB' },
-      { label: 'TypeScript',  Icon: SiTypescript,   color: '#3178C6' },
-      { label: 'Next.js',     Icon: SiNextdotjs,    color: '#fff' },
-      { label: 'Tailwind',    Icon: SiTailwindcss,  color: '#38BDF8' },
+      { label: 'React',       TagIcon: SiReact,        color: '#61DAFB' },
+      { label: 'TypeScript',  TagIcon: SiTypescript,   color: '#3178C6' },
+      { label: 'Next.js',     TagIcon: SiNextdotjs,    color: '#fafafa' },
+      { label: 'Tailwind',    TagIcon: SiTailwindcss,  color: '#38BDF8' },
     ],
   },
   {
-    icon: '🛠️',
+    Icon: LuServer,
     name: 'Backend',
     desc: 'Scalable APIs and server-side logic',
     tags: [
-      { label: 'Node.js',    Icon: SiNodedotjs,   color: '#6DA55F' },
-      { label: 'Express',    Icon: SiExpress,      color: '#fff' },
-      { label: 'PostgreSQL', Icon: SiPostgresql,   color: '#316192' },
-      { label: 'REST',       Icon: TbApi,          color: '#94a3b8' },
+      { label: 'Node.js',    TagIcon: SiNodedotjs,   color: '#6DA55F' },
+      { label: 'Express',    TagIcon: SiExpress,      color: '#fafafa' },
+      { label: 'PostgreSQL', TagIcon: SiPostgresql,   color: '#316192' },
+      { label: 'REST',       TagIcon: TbApi,          color: '#a1a1aa' },
     ],
   },
   {
-    icon: '🎨',
+    Icon: LuPalette,
     name: 'Design',
     desc: 'Clean interfaces with great UX',
     tags: [
-      { label: 'Figma',      Icon: SiFigma,            color: '#F24E1E' },
-      { label: 'CSS',        Icon: SiCss,              color: '#264de4' },
-      { label: 'Animations', Icon: RiSparkling2Fill,   color: '#a78bfa' },
-      { label: 'A11y',       Icon: MdAccessibility,    color: '#22d3ee' },
+      { label: 'Figma',      TagIcon: SiFigma,            color: '#F24E1E' },
+      { label: 'CSS',        TagIcon: SiCss,              color: '#264de4' },
+      { label: 'Animations', TagIcon: RiSparkling2Fill,   color: '#a78bfa' },
+      { label: 'A11y',       TagIcon: MdAccessibility,    color: '#34d399' },
     ],
   },
   {
-    icon: '🚀',
+    Icon: LuRocket,
     name: 'DevOps',
     desc: 'Deploying and maintaining apps',
     tags: [
-      { label: 'Docker',          Icon: SiDocker,         color: '#2496ED' },
-      { label: 'GitHub Actions',  Icon: SiGithubactions,  color: '#fff' },
-      { label: 'Vercel',          Icon: SiVercel,         color: '#fff' },
-      { label: 'Linux',           Icon: SiLinux,          color: '#FCC624' },
+      { label: 'Docker',          TagIcon: SiDocker,         color: '#2496ED' },
+      { label: 'GitHub Actions',  TagIcon: SiGithubactions,  color: '#fafafa' },
+      { label: 'Vercel',          TagIcon: SiVercel,         color: '#fafafa' },
+      { label: 'Linux',           TagIcon: SiLinux,          color: '#FCC624' },
     ],
   },
 ]
@@ -63,6 +64,14 @@ const skills = [
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
+
+  const handleCardMouse = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`)
+    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`)
+  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -71,18 +80,18 @@ export default function Skills() {
         {
           y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
           scrollTrigger: {
-            trigger: headerRef.current, start: 'top 95%', end: 'bottom 5%',
+            trigger: headerRef.current, start: 'top 90%', end: 'bottom 10%',
             toggleActions: 'play reverse play reverse'
           }
         }
       )
       gsap.fromTo('.skill-card',
-        { y: 50, opacity: 0 },
+        { y: 40, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 0.6, ease: 'power3.out',
-          stagger: 0.12,
+          stagger: 0.1,
           scrollTrigger: {
-            trigger: '.skills-grid', start: 'top 95%', end: 'bottom 5%',
+            trigger: gridRef.current, start: 'top 90%', end: 'bottom 10%',
             toggleActions: 'play reverse play reverse'
           }
         }
@@ -102,16 +111,23 @@ export default function Skills() {
             A toolkit built over years of shipping real products — from idea to production.
           </p>
         </div>
-        <div className="skills-grid">
+        <div ref={gridRef} className="skills-grid">
           {skills.map(s => (
-            <div key={s.name} className="skill-card" style={{ opacity: 0 }}>
-              <div className="skill-icon">{s.icon}</div>
+            <div
+              key={s.name}
+              className="skill-card"
+              style={{ opacity: 0 }}
+              onMouseMove={handleCardMouse}
+            >
+              <div className="skill-icon">
+                <s.Icon size={20} />
+              </div>
               <div className="skill-name">{s.name}</div>
-              <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 4 }}>{s.desc}</p>
+              <p className="skill-desc">{s.desc}</p>
               <div className="skill-tags">
                 {s.tags.map(t => (
-                  <span key={t.label} className="tag skill-tag-icon">
-                    <t.Icon size={13} color={t.color} style={{ flexShrink: 0 }} />
+                  <span key={t.label} className="tag">
+                    <t.TagIcon size={12} color={t.color} style={{ flexShrink: 0 }} />
                     {t.label}
                   </span>
                 ))}
