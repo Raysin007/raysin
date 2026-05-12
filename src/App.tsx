@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { useState } from 'react'
 import './index.css'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -25,11 +26,35 @@ export default function App() {
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (glowRef.current) {
-        glowRef.current.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`
+        glowRef.current.style.transform = `translate(${e.clientX - 350}px, ${e.clientY - 350}px)`
       }
     }
     window.addEventListener('mousemove', onMove, { passive: true })
     return () => window.removeEventListener('mousemove', onMove)
+  }, [])
+
+  // Magnetic buttons
+  useEffect(() => {
+    const handleMagnetic = (e: MouseEvent) => {
+      const btns = document.querySelectorAll<HTMLElement>('.btn-primary, .btn-outline')
+      btns.forEach(btn => {
+        const rect = btn.getBoundingClientRect()
+        const cx = rect.left + rect.width / 2
+        const cy = rect.top + rect.height / 2
+        const dx = e.clientX - cx
+        const dy = e.clientY - cy
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const threshold = 80
+        if (dist < threshold) {
+          const pull = (1 - dist / threshold) * 0.35
+          btn.style.transform = `translate(${dx * pull}px, ${dy * pull}px)`
+        } else {
+          btn.style.transform = ''
+        }
+      })
+    }
+    window.addEventListener('mousemove', handleMagnetic, { passive: true })
+    return () => window.removeEventListener('mousemove', handleMagnetic)
   }, [])
 
   return (

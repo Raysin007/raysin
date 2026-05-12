@@ -112,13 +112,14 @@ export default function Skills() {
           </p>
         </div>
         <div ref={gridRef} className="skills-grid">
-          {skills.map(s => (
+          {skills.map((s, i) => (
             <div
               key={s.name}
               className="skill-card"
               style={{ opacity: 0 }}
               onMouseMove={handleCardMouse}
             >
+              <span className="skill-card-number">{String(i + 1).padStart(2, '0')}</span>
               <div className="skill-icon">
                 <s.Icon size={20} />
               </div>

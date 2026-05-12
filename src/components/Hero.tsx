@@ -1,5 +1,13 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import ParticleField from './ParticleField'
+
+const roles = [
+  'Full-Stack Developer',
+  'UI/UX Enthusiast',
+  'Photographer',
+  'Creative Coder',
+]
 
 export default function Hero() {
   const badgeRef = useRef<HTMLDivElement>(null)
@@ -7,30 +15,55 @@ export default function Hero() {
   const roleRef = useRef<HTMLParagraphElement>(null)
   const descRef = useRef<HTMLParagraphElement>(null)
   const actionsRef = useRef<HTMLDivElement>(null)
+  const [roleText, setRoleText] = useState('')
+  const [roleIdx, setRoleIdx] = useState(0)
+  const [typing, setTyping] = useState(true)
 
   const scrollTo = (id: string) =>
     document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
 
+  // Typewriter effect
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.7 })
+    const target = roles[roleIdx]
+    let timeout: ReturnType<typeof setTimeout>
+
+    if (typing) {
+      if (roleText.length < target.length) {
+        timeout = setTimeout(() => setRoleText(target.slice(0, roleText.length + 1)), 60)
+      } else {
+        timeout = setTimeout(() => setTyping(false), 2200)
+      }
+    } else {
+      if (roleText.length > 0) {
+        timeout = setTimeout(() => setRoleText(roleText.slice(0, -1)), 35)
+      } else {
+        setRoleIdx(i => (i + 1) % roles.length)
+        setTyping(true)
+      }
+    }
+    return () => clearTimeout(timeout)
+  }, [roleText, typing, roleIdx])
+
+  useEffect(() => {
+    const tl = gsap.timeline({ delay: 0.5 })
     tl.fromTo(badgeRef.current,
-      { y: 24, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
+      { y: 28, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }
     )
     .fromTo(nameRef.current,
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-      '-=0.3'
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+      '-=0.35'
     )
     .fromTo(roleRef.current,
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
-      '-=0.45'
+      '-=0.5'
     )
     .fromTo(descRef.current,
       { y: 24, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
-      '-=0.35'
+      '-=0.4'
     )
     .fromTo(actionsRef.current,
       { y: 20, opacity: 0 },
@@ -41,6 +74,8 @@ export default function Hero() {
 
   return (
     <section className="hero section">
+      <ParticleField />
+
       <div className="hero-video-bg">
         <video
           className="hero-video"
@@ -59,16 +94,22 @@ export default function Hero() {
           <span className="hero-badge-dot" />
           Available for work
         </div>
+
         <h1 ref={nameRef} className="hero-name" style={{ opacity: 0 }}>
-          Hi, I'm <span className="hero-name-accent">Rahul</span>
+          Hi, I'm{' '}
+          <span className="hero-name-accent">Rahul</span>
         </h1>
+
         <p ref={roleRef} className="hero-role" style={{ opacity: 0 }}>
-          Full-Stack Developer &amp; Photographer
+          {roleText}
+          <span className="hero-role-cursor" />
         </p>
+
         <p ref={descRef} className="hero-desc" style={{ opacity: 0 }}>
           I craft pixel-perfect web experiences with clean code and thoughtful design.
           Turning ideas into fast, accessible, and beautiful products.
         </p>
+
         <div ref={actionsRef} className="hero-actions" style={{ opacity: 0 }}>
           <a
             href="#projects"

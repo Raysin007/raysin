@@ -76,7 +76,7 @@ export default function Projects() {
           </p>
         </div>
         <div className="projects-grid">
-          {projects.map(p => (
+          {projects.map((p, i) => (
             <div key={p.title} className="project-card" style={{ opacity: 0 }}>
               <div className="project-thumb">
                 <img
@@ -84,8 +84,10 @@ export default function Projects() {
                   alt={p.title}
                   loading="lazy"
                 />
+                <div className="project-thumb-overlay" />
               </div>
               <div className="project-body">
+                <div className="project-number">Project {String(i + 1).padStart(2, '0')}</div>
                 <div className="project-title">{p.title}</div>
                 <p className="project-desc">{p.desc}</p>
                 <div className="project-tags">
