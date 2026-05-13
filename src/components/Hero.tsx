@@ -16,6 +16,7 @@ export default function Hero() {
   const roleRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
   const marqueeRef = useRef<HTMLDivElement>(null)
+  const portraitRef = useRef<HTMLImageElement>(null)
 
   const [roleText, setRoleText] = useState('')
   const [roleIdx, setRoleIdx] = useState(0)
@@ -56,6 +57,11 @@ export default function Hero() {
       { opacity: 0, scale: 0.96 },
       { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out' },
       '-=0.3'
+    )
+    .fromTo(portraitRef.current,
+      { y: 80, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' },
+      '-=0.8'
     )
     .fromTo(badgeRef.current,
       { y: 20, opacity: 0 },
@@ -103,9 +109,11 @@ export default function Hero() {
       </div>
 
       <img
+        ref={portraitRef}
         src="/raysin.png"
         alt="Rahul"
         className="hero-portrait"
+        style={{ opacity: 0 }}
       />
 
 
