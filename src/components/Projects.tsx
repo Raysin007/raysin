@@ -1,30 +1,31 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import './Projects.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
-    image: 'https://picsum.photos/seed/analyticsdash/800/500',
+    image: 'https://picsum.photos/seed/realtimechat/800/500',
     title: 'E-Commerce Platform',
-    desc: 'Full-stack shopping app with auth, cart, payments and admin dashboard. Built for scale with a clean component architecture.',
+    desc: 'A high-performance shopping experience with a focus on seamless transitions and rapid checkout.',
     tags: ['React', 'Node.js', 'Stripe'],
     demo: '#',
     code: '#',
   },
   {
     image: 'https://picsum.photos/seed/realtimechat/800/500',
-    title: 'Real-time Chat App',
-    desc: 'WebSocket-powered messenger with rooms, typing indicators and media sharing. Handles concurrent connections gracefully.',
+    title: 'Digital Workspace',
+    desc: 'An integrated suite of tools designed for creators and remote teams to collaborate in real-time.',
     tags: ['Socket.io', 'React', 'MongoDB'],
     demo: '#',
     code: '#',
   },
   {
     image: 'https://picsum.photos/seed/analyticsdash/800/500',
-    title: 'Analytics Dashboard',
-    desc: 'Interactive data visualization with real-time charts, filtering and drill-down capabilities for complex datasets.',
+    title: 'Data Visualization',
+    desc: 'Translating complex datasets into interactive, beautiful, and actionable insights for decision makers.',
     tags: ['D3.js', 'TypeScript', 'REST API'],
     demo: '#',
     code: '#',
@@ -40,21 +41,21 @@ export default function Projects() {
       gsap.fromTo(headerRef.current,
         { y: 40, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
           scrollTrigger: {
-            trigger: headerRef.current, start: 'top 90%', end: 'bottom 10%',
-            toggleActions: 'play reverse play reverse'
+            trigger: headerRef.current,
+            start: 'top 85%',
           }
         }
       )
-      gsap.fromTo('.project-card',
-        { y: 50, opacity: 0 },
+      gsap.fromTo('.project-card-v2',
+        { y: 60, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
-          stagger: 0.15,
+          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          stagger: 0.2,
           scrollTrigger: {
-            trigger: '.projects-grid', start: 'top 90%', end: 'bottom 10%',
-            toggleActions: 'play reverse play reverse'
+            trigger: '.projects-grid-v2',
+            start: 'top 80%',
           }
         }
       )
@@ -64,48 +65,37 @@ export default function Projects() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="projects" className="section">
+    <section ref={sectionRef} id="projects" className="projects-v2">
       <div className="container">
-        <div ref={headerRef} style={{ opacity: 0 }}>
-          <span className="section-label">My Work</span>
-          <h2 className="section-title">
-            Featured <span className="accent-text">Projects</span>
+        <div ref={headerRef} className="projects-header">
+          <span className="projects-label">// Work</span>
+          <h2 className="projects-main-title">
+            Featured <span>Creations</span>
           </h2>
-          <p className="section-desc">
-            A selection of projects I've built — each one solving a real problem.
+          <p className="projects-desc">
+            A selection of projects that showcase my passion for clean code and exceptional design.
           </p>
         </div>
-        <div className="projects-grid">
+
+        <div className="projects-grid-v2">
           {projects.map((p, i) => (
-            <div key={p.title} className="project-card" style={{ opacity: 0 }}>
-              <div className="project-thumb">
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  loading="lazy"
-                />
-                <div className="project-thumb-overlay" />
+            <div key={p.title} className="project-card-v2">
+              <div className="project-image-wrap">
+                <img src={p.image} alt={p.title} loading="lazy" />
+                <div className="project-overlay" />
               </div>
-              <div className="project-body">
-                <div className="project-number">Project {String(i + 1).padStart(2, '0')}</div>
-                <div className="project-title">{p.title}</div>
-                <p className="project-desc">{p.desc}</p>
-                <div className="project-tags">
-                  {p.tags.map(t => <span key={t} className="tag">{t}</span>)}
+              <div className="project-info-v2">
+                <div className="project-meta">
+                  <span className="project-index">0{i + 1}</span>
+                  <div className="project-tags-v2">
+                    {p.tags.map(t => <span key={t}>{t}</span>)}
+                  </div>
                 </div>
-                <div className="project-links">
-                  <a href={p.demo} className="project-link">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M7 17L17 7M17 7H7M17 7v10"/>
-                    </svg>
-                    Live Demo
-                  </a>
-                  <a href={p.code} className="project-link project-link-secondary">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
-                    </svg>
-                    Source
-                  </a>
+                <h3 className="project-title-v2">{p.title}</h3>
+                <p className="project-desc-v2">{p.desc}</p>
+                <div className="project-links-v2">
+                  <a href={p.demo} target="_blank" rel="noreferrer">Live Demo</a>
+                  <a href={p.code} target="_blank" rel="noreferrer">Source Code</a>
                 </div>
               </div>
             </div>

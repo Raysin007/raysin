@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
@@ -11,6 +11,7 @@ import { TbApi } from 'react-icons/tb'
 import { MdAccessibility } from 'react-icons/md'
 import { RiSparkling2Fill } from 'react-icons/ri'
 import { LuCode, LuServer, LuPalette, LuRocket } from 'react-icons/lu'
+import './Skills.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -18,29 +19,29 @@ const skills = [
   {
     Icon: LuCode,
     name: 'Frontend',
-    desc: 'Building modern, responsive UIs',
+    desc: 'Crafting immersive interfaces with modern frameworks and pixel-perfect attention to detail.',
     tags: [
       { label: 'React',       TagIcon: SiReact,        color: '#61DAFB' },
       { label: 'TypeScript',  TagIcon: SiTypescript,   color: '#3178C6' },
-      { label: 'Next.js',     TagIcon: SiNextdotjs,    color: '#fafafa' },
+      { label: 'Next.js',     TagIcon: SiNextdotjs,    color: '#ffffff' },
       { label: 'Tailwind',    TagIcon: SiTailwindcss,  color: '#38BDF8' },
     ],
   },
   {
     Icon: LuServer,
     name: 'Backend',
-    desc: 'Scalable APIs and server-side logic',
+    desc: 'Architecting robust, scalable server-side systems and efficient database structures.',
     tags: [
       { label: 'Node.js',    TagIcon: SiNodedotjs,   color: '#6DA55F' },
-      { label: 'Express',    TagIcon: SiExpress,      color: '#fafafa' },
+      { label: 'Express',    TagIcon: SiExpress,      color: '#ffffff' },
       { label: 'PostgreSQL', TagIcon: SiPostgresql,   color: '#316192' },
-      { label: 'REST',       TagIcon: TbApi,          color: '#a1a1aa' },
+      { label: 'REST APIs',  TagIcon: TbApi,          color: '#a1a1aa' },
     ],
   },
   {
     Icon: LuPalette,
     name: 'Design',
-    desc: 'Clean interfaces with great UX',
+    desc: 'Designing user-centric digital experiences that blend aesthetic beauty with intuitive flow.',
     tags: [
       { label: 'Figma',      TagIcon: SiFigma,            color: '#F24E1E' },
       { label: 'CSS',        TagIcon: SiCss,              color: '#264de4' },
@@ -51,11 +52,11 @@ const skills = [
   {
     Icon: LuRocket,
     name: 'DevOps',
-    desc: 'Deploying and maintaining apps',
+    desc: 'Streamlining deployment pipelines and managing infrastructure for maximum uptime.',
     tags: [
       { label: 'Docker',          TagIcon: SiDocker,         color: '#2496ED' },
-      { label: 'GitHub Actions',  TagIcon: SiGithubactions,  color: '#fafafa' },
-      { label: 'Vercel',          TagIcon: SiVercel,         color: '#fafafa' },
+      { label: 'GitHub Actions',  TagIcon: SiGithubactions,  color: '#ffffff' },
+      { label: 'Vercel',          TagIcon: SiVercel,         color: '#ffffff' },
       { label: 'Linux',           TagIcon: SiLinux,          color: '#FCC624' },
     ],
   },
@@ -64,35 +65,27 @@ const skills = [
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
-  const gridRef = useRef<HTMLDivElement>(null)
-
-  const handleCardMouse = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget
-    const rect = card.getBoundingClientRect()
-    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`)
-    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`)
-  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(headerRef.current,
         { y: 40, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
           scrollTrigger: {
-            trigger: headerRef.current, start: 'top 90%', end: 'bottom 10%',
-            toggleActions: 'play reverse play reverse'
+            trigger: headerRef.current,
+            start: 'top 85%',
           }
         }
       )
-      gsap.fromTo('.skill-card',
-        { y: 40, opacity: 0 },
+      gsap.fromTo('.skill-card-v2',
+        { y: 50, opacity: 0 },
         {
           y: 0, opacity: 1, duration: 0.6, ease: 'power3.out',
           stagger: 0.1,
           scrollTrigger: {
-            trigger: gridRef.current, start: 'top 90%', end: 'bottom 10%',
-            toggleActions: 'play reverse play reverse'
+            trigger: '.skills-grid-v2',
+            start: 'top 85%',
           }
         }
       )
@@ -102,33 +95,30 @@ export default function Skills() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="skills" className="section skills-bg">
+    <section ref={sectionRef} id="skills" className="skills-v2">
       <div className="container">
-        <div ref={headerRef} style={{ opacity: 0 }}>
-          <span className="section-label">What I Do</span>
-          <h2 className="section-title">Skills &amp; Expertise</h2>
-          <p className="section-desc">
-            A toolkit built over years of shipping real products — from idea to production.
+        <div ref={headerRef} className="skills-header">
+          <span className="skills-label">// Skills</span>
+          <h2 className="skills-main-title">
+            Expertise & <span>Toolkit</span>
+          </h2>
+          <p className="skills-desc">
+            A comprehensive suite of technologies I use to bring complex ideas to life across the entire stack.
           </p>
         </div>
-        <div ref={gridRef} className="skills-grid">
-          {skills.map((s, i) => (
-            <div
-              key={s.name}
-              className="skill-card"
-              style={{ opacity: 0 }}
-              onMouseMove={handleCardMouse}
-            >
-              <span className="skill-card-number">{String(i + 1).padStart(2, '0')}</span>
-              <div className="skill-icon">
-                <s.Icon size={20} />
+
+        <div className="skills-grid-v2">
+          {skills.map((s) => (
+            <div key={s.name} className="skill-card-v2">
+              <div className="skill-icon-v2">
+                <s.Icon />
               </div>
-              <div className="skill-name">{s.name}</div>
-              <p className="skill-desc">{s.desc}</p>
-              <div className="skill-tags">
+              <h3 className="skill-name-v2">{s.name}</h3>
+              <p className="skill-desc-v2">{s.desc}</p>
+              <div className="skill-tags-v2">
                 {s.tags.map(t => (
-                  <span key={t.label} className="tag">
-                    <t.TagIcon size={12} color={t.color} style={{ flexShrink: 0 }} />
+                  <span key={t.label} className="skill-tag-v2">
+                    <t.TagIcon size={12} color={t.color} />
                     {t.label}
                   </span>
                 ))}

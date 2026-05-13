@@ -19,7 +19,7 @@ export default function ParticleField() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const colors = ['rgba(0,200,255,', 'rgba(168,85,247,', 'rgba(0,150,200,']
+    const colors = ['rgba(251,92,60,', 'rgba(212,61,33,', 'rgba(0,0,0,']
     const particles: Particle[] = []
     let animId: number
     let W = 0, H = 0
@@ -32,15 +32,15 @@ export default function ParticleField() {
     const spawn = (): Particle => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      size: Math.random() * 1.5 + 0.4,
-      alpha: Math.random() * 0.5 + 0.1,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      size: Math.random() * 1.2 + 0.3,
+      alpha: Math.random() * 0.4 + 0.1,
       color: colors[Math.floor(Math.random() * colors.length)],
     })
 
     resize()
-    for (let i = 0; i < 80; i++) particles.push(spawn())
+    for (let i = 0; i < 60; i++) particles.push(spawn())
 
     const draw = () => {
       ctx.clearRect(0, 0, W, H)
@@ -68,7 +68,7 @@ export default function ParticleField() {
             ctx.beginPath()
             ctx.moveTo(particles[i].x, particles[i].y)
             ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(0,100,150,${0.1 * (1 - dist / 100)})`
+            ctx.strokeStyle = `rgba(0,0,0,${0.05 * (1 - dist / 100)})`
             ctx.lineWidth = 0.5
             ctx.stroke()
           }

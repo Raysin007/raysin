@@ -1,13 +1,15 @@
 export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
     <footer className="footer">
       <div className="container footer-inner">
-        <p>Designed & built by Rahul</p>
-        <p>
-          <a href="https://github.com/Raysin007" target="_blank" rel="noreferrer">
-            github.com/Raysin007
-          </a>
-        </p>
+        <div className="footer-left">
+          <p>© {year} Raysin & Design</p>
+        </div>
+        <div className="footer-right">
+          <p>Built with passion in Darjeeling</p>
+        </div>
       </div>
     </footer>
   )

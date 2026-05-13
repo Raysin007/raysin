@@ -1,10 +1,9 @@
-/* import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import './Navbar.css'
 
 const links = [
-  { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
 ]
 
 export default function Navbar() {
@@ -13,15 +12,18 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    gsap.fromTo(
-      navRef.current,
-      { y: -60, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.3 }
-    )
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        navRef.current,
+        { y: -60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.3 }
+      )
+    })
+    return () => ctx.revert()
   }, [])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 100)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -32,17 +34,20 @@ export default function Navbar() {
   }
 
   return (
-    <nav ref={navRef} className={`navbar${scrolled ? ' scrolled' : ''}`} style={{ opacity: 0 }}>
+    <nav ref={navRef} className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ opacity: 0 }}>
       <div className="container navbar-inner">
         <a
           href="#"
           className="navbar-logo"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={(e) => {
+            e.preventDefault()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
         >
           Ray<span>sin</span>
         </a>
 
-        <ul className={`navbar-links${open ? ' open' : ''}`}>
+        <ul className={`navbar-links ${open ? 'open' : ''}`}>
           {links.map(l => (
             <li key={l.href}>
               <a href={l.href} onClick={e => { e.preventDefault(); handleNav(l.href) }}>
@@ -74,4 +79,3 @@ export default function Navbar() {
     </nav>
   )
 }
- */

@@ -1,0 +1,140 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 24px 0;
+}
+
+.navbar.scrolled {
+  padding: 16px 0;
+  background: rgba(2, 4, 8, 0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-logo {
+  font-family: var(--geist);
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+}
+
+.navbar.scrolled .navbar-logo {
+  color: #ffffff;
+}
+
+.navbar-logo span {
+  color: var(--accent);
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links a {
+  font-family: var(--geist);
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled .navbar-links a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar.scrolled .navbar-links a:hover {
+  color: #ffffff;
+}
+
+.navbar-cta {
+  padding: 10px 24px;
+  border-radius: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease !important;
+}
+
+.navbar.scrolled .navbar-cta {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+}
+
+.navbar-cta:hover {
+  background: #000000;
+  color: #ffffff !important;
+  border-color: #000000;
+}
+
+.navbar.scrolled .navbar-cta:hover {
+  background: #ffffff;
+  color: #000000 !important;
+  border-color: #ffffff;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1001;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #1a1a1a;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled .hamburger span {
+  background: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: #020408;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .navbar-links.open {
+    right: 0;
+  }
+
+  .navbar-links a {
+    font-size: 24px;
+    color: #ffffff !important;
+  }
+}

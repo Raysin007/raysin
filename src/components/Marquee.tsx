@@ -3,6 +3,7 @@ import {
   SiNodedotjs, SiExpress, SiPostgresql,
   SiFigma, SiDocker, SiGithubactions, SiVercel, SiLinux,
 } from 'react-icons/si'
+import './Marquee.css'
 
 const items = [
   { label: 'React', Icon: SiReact, color: '#61DAFB' },

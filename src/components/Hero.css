@@ -291,15 +291,77 @@
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
+  .hero-v2 {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
   .hero-topnav { padding: 20px 24px; }
-  .hero-topnav-links { display: none; }
 
-  .hero-marquee-text { -webkit-text-stroke-width: 1px; }
+  .hero-marquee-wrap {
+    transform: translateY(-50%);
+    top: 45%;
+  }
 
-  .hero-socials { left: 24px; bottom: 36px; }
+  .hero-marquee-text {
+    font-size: clamp(70px, 20vw, 100px);
+  }
 
-  .hero-role-block { right: 24px; bottom: 36px; }
-  .hero-role-title { font-size: 20px; }
+  .hero-portrait {
+    height: 70%;
+    max-height: 520px;
+    bottom: 0;
+  }
 
-  .hero-cta-row { flex-direction: column; gap: 8px; }
+  .hero-socials {
+    left: 24px;
+    bottom: 24px;
+    gap: 10px;
+    flex-direction: row;
+    width: auto;
+  }
+
+  .hero-social-link span {
+    display: none; /* Hide social labels on very small screens if needed */
+  }
+
+  .hero-role-block {
+    right: 24px;
+    bottom: 24px;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .hero-role-title { font-size: 18px; }
+  .hero-role-slash { font-size: 14px; }
+
+  .hero-cta-row {
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-socials {
+    display: none; /* Hide socials on extremely narrow screens to save space */
+  }
+
+  .hero-role-block {
+    left: 24px;
+    right: 24px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-cta-row {
+    justify-content: center;
+    width: 100%;
+  }
 }
