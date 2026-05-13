@@ -68,7 +68,7 @@ export default function ParticleField() {
             ctx.beginPath()
             ctx.moveTo(particles[i].x, particles[i].y)
             ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(0,200,255,${0.04 * (1 - dist / 100)})`
+            ctx.strokeStyle = `rgba(0,100,150,${0.1 * (1 - dist / 100)})`
             ctx.lineWidth = 0.5
             ctx.stroke()
           }

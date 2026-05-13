@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+/* import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
 const links = [
@@ -74,3 +74,4 @@ export default function Navbar() {
     </nav>
   )
 }
+ */

@@ -1,52 +1,45 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import './About.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const stats = [
-  { number: '1+', label: 'Years Experience' },
-  { number: '10+', label: 'Projects Shipped' },
-  { number: '10+', label: 'Happy Clients' },
-  { number: '24/7', label: 'Fueled by Coffee' },
-]
-
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null)
-  const avatarRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
-  const statsRef = useRef<HTMLDivElement>(null)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(avatarRef.current,
-        { x: -50, opacity: 0 },
-        {
-          x: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: {
-            trigger: avatarRef.current, start: 'top 90%', end: 'bottom 10%',
-            toggleActions: 'play reverse play reverse'
-          }
+      gsap.to(headingRef.current, {
+        color: '#ffffff',
+        duration: 1,
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: 'top 80%',
+          end: 'top 30%',
+          scrub: true,
         }
-      )
-      gsap.fromTo(textRef.current,
-        { x: 50, opacity: 0 },
-        {
-          x: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: {
-            trigger: textRef.current, start: 'top 90%', end: 'bottom 10%',
-            toggleActions: 'play reverse play reverse'
-          }
+      })
+      gsap.to(headingRef.current?.querySelectorAll('span') || [], {
+        color: '#fb5c3c',
+        duration: 1,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: 'top 80%',
+          end: 'top 30%',
+          scrub: true,
         }
-      )
-      gsap.fromTo('.stat-card',
-        { y: 24, opacity: 0 },
+      })
+      gsap.fromTo(contentRef.current,
+        { y: 40, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.5, ease: 'power3.out',
-          stagger: 0.08,
+          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
           scrollTrigger: {
-            trigger: statsRef.current, start: 'top 92%', end: 'bottom 10%',
-            toggleActions: 'play reverse play reverse'
+            trigger: contentRef.current,
+            start: 'top 90%',
           }
         }
       )
@@ -55,39 +48,30 @@ export default function About() {
     return () => ctx.revert()
   }, [])
 
+  const scrollToProjects = () => {
+    document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
-    <section ref={sectionRef} id="about" className="section">
+    <section ref={sectionRef} id="about" className="about-v2">
       <div className="container">
-        <div className="about-grid">
-          <div ref={avatarRef} className="about-avatar-wrap" style={{ opacity: 0 }}>
-            <div className="about-avatar">
-              <img src="./rahul.png" alt="Rahul — Full-stack developer from Darjeeling" />
-            </div>
-          </div>
+        <span className="about-intro-label">// Intro</span>
 
-          <div ref={textRef} className="about-text" style={{ opacity: 0 }}>
-            <span className="section-label">About Me</span>
-            <h2 className="section-title">
-              Passionate about <span className="accent-text">great software</span>
-            </h2>
-            <p className="section-desc" style={{ marginBottom: 20 }}>
-              I'm a full-stack developer based in the beautiful hills of Darjeeling who loves building
-              web applications that are both beautiful and functional. My focus is on
-              writing clean, maintainable code with a strong emphasis on user experience.
-            </p>
-            <p className="section-desc">
-              When I'm not coding, you'll find me capturing beautiful moments on my camera,
-              documenting my life, or spending quality time alone in the mountains.
-            </p>
+        <h2 ref={headingRef} className="about-main-heading">
+          I'm a multidisciplinary <span>developer</span> from <span>Darjeeling</span> who helps <span>creators</span> to build <span>engaging online experiences.</span>
+        </h2>
 
-            <div ref={statsRef} className="about-stats">
-              {stats.map(s => (
-                <div key={s.label} className="stat-card">
-                  <div className="stat-number">{s.number}</div>
-                  <div className="stat-label">{s.label}</div>
-                </div>
-              ))}
-            </div>
+        <div ref={contentRef} className="about-content-row">
+          <p className="about-subtext">
+            Bringing your vision to life quickly and efficiently—whether
+            it's branding, apps, or websites—I've got it covered,
+            delivering smooth and effective solutions from start to finish.
+          </p>
+
+          <div className="about-cta-wrap">
+            <button onClick={scrollToProjects} className="btn-about-work">
+              See my Work
+            </button>
           </div>
         </div>
       </div>

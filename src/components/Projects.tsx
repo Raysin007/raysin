@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
-    image: 'https://picsum.photos/seed/ecommplatform/800/500',
+    image: '/1.png',
     title: 'E-Commerce Platform',
     desc: 'Full-stack shopping app with auth, cart, payments and admin dashboard. Built for scale with a clean component architecture.',
     tags: ['React', 'Node.js', 'Stripe'],

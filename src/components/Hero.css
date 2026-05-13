@@ -1,0 +1,305 @@
+/* ============================================================
+   HERO V2 — paste this block into your index.css
+   (you can remove all the old .hero-* rules that are no longer used)
+   ============================================================ */
+
+/* ── Section shell ── */
+.hero-v2 {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #e0e0e0;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Subtle grid overlay (reused from original hero::before) */
+.hero-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Top nav ── */
+.hero-topnav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  z-index: 20;
+  font-family: var(--geist);
+}
+
+.hero-topnav-logo {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #1a1a1a;
+  opacity: 0.85;
+}
+
+.hero-topnav-contact {
+  font-family: var(--geist);
+  font-size: 13px;
+  font-weight: 600;
+  color: #000000;
+  letter-spacing: 0.06em;
+  transition: opacity 0.2s;
+}
+
+.hero-topnav-contact:hover { opacity: 0.7; }
+
+/* ── Giant scrolling name ── */
+.hero-marquee-wrap {
+  position: absolute;
+  /* Vertically centered, slightly above mid */
+  top: 50%;
+  transform: translateY(-58%);
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: hero-marquee-scroll 18s linear infinite;
+}
+
+.hero-marquee-text {
+  font-family: var(--geist);
+  font-size: clamp(100px, 14vw, 180px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  /* Solid black text */
+  color: #000000;
+  padding-right: 0.15em;
+  flex-shrink: 0;
+}
+
+/* Slow down on hover for a nice interactive feel */
+.hero-v2:hover .hero-marquee-track {
+  animation-play-state: running;
+}
+
+@keyframes hero-marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+/* ── Portrait ── */
+/*
+  Your actual photo:
+    <img src="/your-photo.png" alt="Rahul" className="hero-portrait" />
+
+  Recommended: shoot or cut out against dark BG, or use a PNG with
+  transparency. The grayscale filter ties it to the monochrome palette.
+*/
+.hero-portrait {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 105%;
+  max-height: 900px;
+  width: auto;
+  object-fit: cover;
+  object-position: top center;
+  z-index: 2;
+  filter: grayscale(30%) contrast(1.05) brightness(0.9);
+  pointer-events: none;
+  /* Subtle fade at the feet so it blends into the section */
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 18%);
+  mask-image: linear-gradient(to top, transparent 0%, black 18%);
+}
+
+/* ── Placeholder silhouette (remove when you add your real photo) ── */
+.hero-portrait-placeholder {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 78%;
+  width: 320px;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 14%);
+  mask-image: linear-gradient(to top, transparent 0%, black 14%);
+}
+
+.hero-silhouette {
+  width: 200px;
+  height: 92%;
+  background: linear-gradient(180deg, #1a2a3a 0%, #0a1628 100%);
+  border-radius: 100px 100px 0 0;
+  position: relative;
+  opacity: 0.7;
+}
+
+.hero-silhouette::before {
+  content: '';
+  position: absolute;
+  top: -56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 88px;
+  background: #1a2a3a;
+  border-radius: 50%;
+}
+
+/* ── Social links — bottom left ── */
+.hero-socials {
+  position: absolute;
+  bottom: 52px;
+  left: 48px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hero-social-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--geist);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #4a4a4a;
+  transition: color 0.2s, gap 0.2s;
+}
+
+.hero-social-link:hover {
+  color: var(--accent);
+  gap: 13px;
+}
+
+/* ── Role block — bottom right ── */
+.hero-role-block {
+  position: absolute;
+  bottom: 48px;
+  right: 48px;
+  z-index: 10;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.hero-badge-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* reuse existing dot style */
+.hero-badge-inline .hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #000000;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  animation: pulse-dot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.hero-role-slash {
+  font-family: var(--geist);
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 400;
+  color: #4a4a4a;
+  letter-spacing: 0.01em;
+  min-height: 1.4em;
+}
+
+/* reuse existing cursor */
+.hero-role-slash .hero-role-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 3px;
+  vertical-align: -1px;
+  animation: blink-cursor 1s step-end infinite;
+}
+
+.hero-role-title {
+  font-family: var(--geist);
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #1a1a1a;
+  line-height: 1.1;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.hero-v2 .btn-outline {
+  color: #1a1a1a;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.hero-v2 .btn-outline:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: #1a1a1a;
+}
+
+/* ── Animations (if not already in index.css) ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent); }
+  50%       { opacity: 0.5; box-shadow: 0 0 14px var(--accent); }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .hero-topnav { padding: 20px 24px; }
+  .hero-topnav-links { display: none; }
+
+  .hero-marquee-text { -webkit-text-stroke-width: 1px; }
+
+  .hero-socials { left: 24px; bottom: 36px; }
+
+  .hero-role-block { right: 24px; bottom: 36px; }
+  .hero-role-title { font-size: 20px; }
+
+  .hero-cta-row { flex-direction: column; gap: 8px; }
+}

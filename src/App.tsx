@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import './index.css'
-import Navbar from './components/Navbar'
+/* import Navbar from './components/Navbar' */
 import Hero from './components/Hero'
 import About from './components/About'
 import Marquee from './components/Marquee'
@@ -64,7 +64,7 @@ export default function App() {
         style={{ transform: `scaleX(${scrollProgress})` }}
       />
       <div ref={glowRef} className="cursor-glow" />
-      <Navbar />
+      {/* <Navbar /> */}
       <Hero />
       <About />
       <Marquee />
