@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { LuMail, LuPhone, LuPhoneCall } from 'react-icons/lu'
+import { LuPhoneCall } from 'react-icons/lu'
 import './Contact.css'
 
 gsap.registerPlugin(ScrollTrigger)
