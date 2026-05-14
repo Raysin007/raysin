@@ -11,7 +11,6 @@ const roles = [
 ]
 
 export default function Hero() {
-  const navRef = useRef<HTMLDivElement>(null)
   const socialsRef = useRef<HTMLDivElement>(null)
   const roleRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
@@ -49,14 +48,9 @@ export default function Hero() {
   // GSAP entrance
   useEffect(() => {
     const tl = gsap.timeline({ delay: 0.4 })
-    tl.fromTo(navRef.current,
-      { y: -24, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }
-    )
-    .fromTo(marqueeRef.current,
+    tl.fromTo(marqueeRef.current,
       { opacity: 0, scale: 0.96 },
-      { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out' },
-      '-=0.3'
+      { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out' }
     )
     .fromTo(portraitRef.current,
       { y: 80, opacity: 0 },
@@ -86,18 +80,6 @@ export default function Hero() {
 
       {/* Grid overlay */}
       <div className="hero-grid-overlay" aria-hidden="true" />
-
-      {/* ── Top nav bar ── */}
-      <nav ref={navRef} className="hero-topnav" style={{ opacity: 0 }}>
-        <span className="hero-topnav-logo">© Raysin &amp; Design</span>
-        <a
-          href="#contact"
-          className="hero-topnav-contact"
-          onClick={e => { e.preventDefault(); scrollTo('#contact') }}
-        >
-          Contact
-        </a>
-      </nav>
 
       {/* ── Oversized scrolling name ── */}
       <div ref={marqueeRef} className="hero-marquee-wrap" style={{ opacity: 0 }} aria-hidden="true">

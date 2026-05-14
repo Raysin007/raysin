@@ -36,7 +36,7 @@ export default function App() {
   // Magnetic buttons
   useEffect(() => {
     const handleMagnetic = (e: MouseEvent) => {
-      const btns = document.querySelectorAll<HTMLElement>('.btn-primary, .btn-outline')
+      const btns = document.querySelectorAll<HTMLElement>('.btn, .btn-contact-v2, .btn-about-work, .navbar-cta')
       btns.forEach(btn => {
         const rect = btn.getBoundingClientRect()
         const cx = rect.left + rect.width / 2

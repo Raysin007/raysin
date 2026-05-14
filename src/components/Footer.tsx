@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer-inner">
         <div className="footer-left">
-          <p>© {year} Raysin & Design</p>
+          <p>© {year} Raysin</p>
         </div>
         <div className="footer-right">
           <p>Built with passion in Darjeeling</p>

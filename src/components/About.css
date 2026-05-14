@@ -12,7 +12,7 @@
   font-family: var(--geist);
   font-size: 14px;
   font-weight: 600;
-  color: #fb5c3c;
+  color: var(--accent);
   margin-bottom: 40px;
   display: block;
   letter-spacing: 0.02em;
@@ -30,7 +30,7 @@
 }
 
 .about-main-heading span {
-  color: rgba(251, 92, 60, 0.1); /* Faded initial accent state */
+  color: var(--accent-dim); /* Faded initial accent state */
 }
 
 .about-content-row {
