@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
-    image: 'https://picsum.photos/seed/realtimechat/800/500',
+    image: 'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1600&auto=format&fit=crop',
     title: 'E-Commerce Platform',
     desc: 'A high-performance shopping experience with a focus on seamless transitions and rapid checkout.',
     tags: ['React', 'Node.js', 'Stripe'],
@@ -15,7 +15,7 @@ const projects = [
     code: '#',
   },
   {
-    image: 'https://picsum.photos/seed/realtimechat/800/500',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827752f?q=80&w=1600&auto=format&fit=crop',
     title: 'Digital Workspace',
     desc: 'An integrated suite of tools designed for creators and remote teams to collaborate in real-time.',
     tags: ['Socket.io', 'React', 'MongoDB'],
@@ -23,7 +23,7 @@ const projects = [
     code: '#',
   },
   {
-    image: 'https://picsum.photos/seed/analyticsdash/800/500',
+    image: 'https://images.unsplash.com/photo-1551288049-bbbda5366392?q=80&w=1600&auto=format&fit=crop',
     title: 'Data Visualization',
     desc: 'Translating complex datasets into interactive, beautiful, and actionable insights for decision makers.',
     tags: ['D3.js', 'TypeScript', 'REST API'],

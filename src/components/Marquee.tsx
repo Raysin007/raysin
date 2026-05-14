@@ -26,7 +26,7 @@ const items = [
 ]
 
 export default function Marquee() {
-  const doubled = [...items, ...items]
+  const itemsList = [...items, ...items, ...items]
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function Marquee() {
   return (
     <div ref={sectionRef} className="marquee-section" style={{ opacity: 0 }}>
       <div className="marquee-track">
-        {doubled.map((item, i) => (
+        {itemsList.map((item, i) => (
           <span key={`${item.label}-${i}`} className="marquee-item">
             <item.Icon size={16} color={item.color} />
             {item.label}

@@ -68,7 +68,7 @@ export default function Contact() {
           <div ref={rightRef} className="contact-right-v2">
             <div className="contact-item-v2">
               <span className="contact-item-label-v2">Email</span>
-              <a href="mailto:hello@raymond.dev" className="contact-item-value-v2">
+              <a href="mailto:rahulchettri2020@gmail.com" className="contact-item-value-v2">
                 rahulchettri2020@gmail.com
               </a>
             </div>

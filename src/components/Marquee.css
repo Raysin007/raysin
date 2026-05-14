@@ -1,5 +1,5 @@
 .marquee-section {
-  background: #050c14;
+  background: var(--bg-2);
   padding: 40px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -54,10 +54,10 @@
 
 .marquee-section::before {
   left: 0;
-  background: linear-gradient(90deg, #050c14 0%, transparent 100%);
+  background: linear-gradient(90deg, var(--bg-2) 0%, transparent 100%);
 }
 
 .marquee-section::after {
   right: 0;
-  background: linear-gradient(-90deg, #050c14 0%, transparent 100%);
+  background: linear-gradient(-90deg, var(--bg-2) 0%, transparent 100%);
 }
