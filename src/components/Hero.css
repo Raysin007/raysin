@@ -210,12 +210,12 @@
 .hero-badge-inline {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 6px 16px;
+  gap: 8px;
+  padding: 8px 20px;
   border-radius: 100px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   background: transparent;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: #1a1a1a;
   letter-spacing: 0.08em;
@@ -235,7 +235,7 @@
 
 .hero-role-slash {
   font-family: var(--geist);
-  font-size: clamp(15px, 1.4vw, 19px);
+  font-size: clamp(18px, 1.8vw, 24px);
   font-weight: 400;
   color: #4a4a4a;
   letter-spacing: 0.01em;
@@ -255,7 +255,7 @@
 
 .hero-role-title {
   font-family: var(--geist);
-  font-size: clamp(22px, 2.5vw, 32px);
+  font-size: clamp(32px, 4vw, 48px);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #1a1a1a;
@@ -333,8 +333,8 @@
     text-align: right;
   }
 
-  .hero-role-title { font-size: 18px; }
-  .hero-role-slash { font-size: 14px; }
+  .hero-role-title { font-size: 24px; }
+  .hero-role-slash { font-size: 16px; }
 
   .hero-cta-row {
     flex-direction: row;

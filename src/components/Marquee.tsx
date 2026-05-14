@@ -1,9 +1,14 @@
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
   SiReact, SiTypescript, SiNextdotjs, SiTailwindcss,
   SiNodedotjs, SiExpress, SiPostgresql,
   SiFigma, SiDocker, SiGithubactions, SiVercel, SiLinux,
 } from 'react-icons/si'
 import './Marquee.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const items = [
   { label: 'React', Icon: SiReact, color: '#61DAFB' },
@@ -22,9 +27,28 @@ const items = [
 
 export default function Marquee() {
   const doubled = [...items, ...items]
+  const sectionRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(sectionRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 90%',
+          }
+        }
+      )
+    })
+    return () => ctx.revert()
+  }, [])
 
   return (
-    <div className="marquee-section">
+    <div ref={sectionRef} className="marquee-section" style={{ opacity: 0 }}>
       <div className="marquee-track">
         {doubled.map((item, i) => (
           <span key={`${item.label}-${i}`} className="marquee-item">

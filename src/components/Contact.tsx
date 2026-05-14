@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { LuMail } from 'react-icons/lu'
+import { LuMail, LuPhone, LuPhoneCall } from 'react-icons/lu'
 import './Contact.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -59,8 +59,8 @@ export default function Contact() {
               Whether you have a fully-formed idea or just a spark of inspiration,
               I'm here to help you bring it to life. My inbox is always open.
             </p>
-            <a href="mailto:hello@raymond.dev" className="btn-contact-v2">
-              <LuMail size={18} />
+            <a href="https://wa.me/7047078852" className="btn-contact-v2">
+              <LuPhoneCall size={18} />
               Get in Touch
             </a>
           </div>
@@ -69,7 +69,7 @@ export default function Contact() {
             <div className="contact-item-v2">
               <span className="contact-item-label-v2">Email</span>
               <a href="mailto:hello@raymond.dev" className="contact-item-value-v2">
-                hello@raymond.dev
+                rahulchettri2020@gmail.com
               </a>
             </div>
 
