@@ -27,39 +27,6 @@
   z-index: 1;
 }
 
-/* ── Top nav ── */
-.hero-topnav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 48px;
-  z-index: 20;
-  font-family: var(--geist);
-}
-
-.hero-topnav-logo {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #1a1a1a;
-  opacity: 0.85;
-}
-
-.hero-topnav-contact {
-  font-family: var(--geist);
-  font-size: 13px;
-  font-weight: 600;
-  color: #000000;
-  letter-spacing: 0.06em;
-  transition: opacity 0.2s;
-}
-
-.hero-topnav-contact:hover { opacity: 0.7; }
-
 /* ── Giant scrolling name ── */
 .hero-marquee-wrap {
   position: absolute;
@@ -291,14 +258,6 @@
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-  .hero-v2 {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .hero-topnav { padding: 20px 24px; }
-
   .hero-marquee-wrap {
     transform: translateY(-50%);
     top: 45%;

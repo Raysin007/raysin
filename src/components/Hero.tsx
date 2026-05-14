@@ -53,8 +53,8 @@ export default function Hero() {
       { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out' }
     )
     .fromTo(portraitRef.current,
-      { y: 80, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' },
+      { y: 80, xPercent: -50, opacity: 0 },
+      { y: 0, xPercent: -50, opacity: 1, duration: 1.2, ease: 'power3.out' },
       '-=0.8'
     )
     .fromTo(badgeRef.current,
