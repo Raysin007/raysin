@@ -8,38 +8,41 @@ gsap.registerPlugin(ScrollTrigger)
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
+  const bodyRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.to(headingRef.current, {
-        color: '#ffffff',
-        duration: 1,
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: 'top 80%',
-          end: 'top 30%',
-          scrub: true,
-        }
-      })
-      gsap.to(headingRef.current?.querySelectorAll('span') || [], {
-        color: '#fb5c3c',
-        duration: 1,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: 'top 80%',
-          end: 'top 30%',
-          scrub: true,
-        }
-      })
-      gsap.fromTo(contentRef.current,
+      // Premium character-by-character reveal
+      const chars = headingRef.current?.querySelectorAll('.char')
+      if (chars) {
+        gsap.fromTo(chars,
+          { opacity: 0.05 },
+          {
+            opacity: 1,
+            stagger: 0.05,
+            duration: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: headingRef.current,
+              start: 'top 85%',
+              end: 'top 15%',
+              scrub: true,
+            }
+          }
+        )
+      }
+
+      // Smooth body reveal
+      gsap.fromTo(bodyRef.current,
         { y: 40, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: 'power4.out',
           scrollTrigger: {
-            trigger: contentRef.current,
-            start: 'top 90%',
+            trigger: bodyRef.current,
+            start: 'top 95%',
           }
         }
       )
@@ -52,25 +55,32 @@ export default function About() {
     document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const aboutText = "I'm a multidisciplinary developer from Darjeeling who helps creators to build engaging online experiences."
+
   return (
     <section ref={sectionRef} id="about" className="about-v2">
       <div className="container">
-        <span className="about-intro-label">// Intro</span>
+        <span className="about-label">// Intro</span>
 
-        <h2 ref={headingRef} className="about-main-heading">
-          I'm a multidisciplinary <span>developer</span> from <span>Darjeeling</span> who helps <span>creators</span> to build <span>engaging online experiences.</span>
+        <h2 ref={headingRef} className="about-title">
+          {aboutText.split("").map((char, i) => (
+            <span key={i} className="char">{char}</span>
+          ))}
         </h2>
 
-        <div ref={contentRef} className="about-content-row">
-          <p className="about-subtext">
-            Bringing your vision to life quickly and efficiently—whether
-            it's branding, apps, or websites—I've got it covered,
+        <div ref={bodyRef} className="about-body">
+          <p className="about-description">
+            Bringing your vision to life quickly and efficiently — whether
+            it's branding, apps, or websites — I've got it covered,
             delivering smooth and effective solutions from start to finish.
           </p>
 
-          <div className="about-cta-wrap">
-            <button onClick={scrollToProjects} className="btn-about-work">
-              See my Work
+          <div className="about-footer">
+            <button onClick={scrollToProjects} className="about-cta">
+              Explore my work
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
             </button>
           </div>
         </div>
