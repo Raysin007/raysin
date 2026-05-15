@@ -1,6 +1,9 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Projects.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
@@ -47,42 +50,71 @@ const projects = [
 
 interface ProjectRowProps {
   project: typeof projects[0]
-  index: number
+  containerAnimation: gsap.core.Tween | null
 }
 
-function ProjectRow({ project, index }: ProjectRowProps) {
+function ProjectRow({ project, containerAnimation }: ProjectRowProps) {
   const rowRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(rowRef, { once: true, margin: '-80px' })
+  const imageRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!containerAnimation || !rowRef.current) return
+
+    const ctx = gsap.context(() => {
+      // Reveal the image from the right
+      gsap.fromTo(imageRef.current,
+        { x: 100, opacity: 0, scale: 0.9 },
+        {
+          x: 0, opacity: 1, scale: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: rowRef.current,
+            containerAnimation: containerAnimation,
+            start: "left 90%",
+            end: "left 20%",
+            scrub: true,
+          }
+        }
+      )
+
+      // Reveal the content with a slight offset
+      gsap.fromTo(contentRef.current,
+        { x: 50, opacity: 0 },
+        {
+          x: 0, opacity: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: rowRef.current,
+            containerAnimation: containerAnimation,
+            start: "left 80%",
+            end: "left 30%",
+            scrub: true,
+          }
+        }
+      )
+    }, rowRef)
+
+    return () => ctx.revert()
+  }, [containerAnimation])
 
   return (
-    <motion.div
-      ref={rowRef}
-      className="project-card"
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: index * 0.15 }}
-    >
+    <div ref={rowRef} className="project-card">
       <div className="project-card__inner">
-        {/* Left: Image Side */}
-        <div className="project-card__image-container">
+        <div ref={imageRef} className="project-card__image-container">
           <img src={project.image} alt={project.title} className="project-card__image" />
         </div>
 
-        {/* Right: Content Side */}
-        <div className="project-card__content">
+        <div ref={contentRef} className="project-card__content">
           <div className="project-card__header">
             <span className="project-card__year">({project.year})</span>
             <h3 className="project-card__title">{project.title}</h3>
           </div>
-
           <div className="project-card__description-wrap">
-            <p className="project-card__description">
-              {project.description}
-            </p>
+            <p className="project-card__description">{project.description}</p>
           </div>
-
           <div className="project-card__tags">
-            {project.tags.map((tag) => (
+            {project.tags.map((tag: string) => (
               <div key={tag} className="project-card__tag-item">
                 <span className="project-card__tag-text">{tag}</span>
               </div>
@@ -90,34 +122,70 @@ function ProjectRow({ project, index }: ProjectRowProps) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
 export default function Projects() {
-  const headingRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(headingRef, { once: true, margin: '-60px' })
+  const sectionRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [masterTween, setMasterTween] = useState<gsap.core.Tween | null>(null)
+
+  useEffect(() => {
+    const mm = gsap.matchMedia()
+
+    mm.add("(min-width: 769px)", () => {
+      const track = trackRef.current
+      if (!track) return
+
+      // Allow DOM to settle for accurate scrollWidth
+      const timer = setTimeout(() => {
+        const lastCard = track.querySelector('.project-card-horizontal:last-child')
+        const lastCardWidth = lastCard ? lastCard.getBoundingClientRect().width : 0
+
+        // Scroll until the last card is at the same starting offset (48px) as the first.
+        // This ensures the previous project (and the 100px gap) is pushed fully off-screen.
+        const horizontalScrollLength = track.scrollWidth - lastCardWidth - 48
+
+        const tween = gsap.to(track, {
+          x: -horizontalScrollLength,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: () => `+=${horizontalScrollLength}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          }
+        })
+
+        setMasterTween(tween)
+      }, 100)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    })
+
+    return () => mm.revert()
+  }, [])
 
   return (
-    <section className="projects-section" id="projects">
-      <div className="projects-container">
+    <section ref={sectionRef} className="projects-section" id="projects">
+      <div className="projects-sticky-wrap">
+        <div className="projects-container">
+          <div className="projects-heading">
+            <span className="projects-label">// Projects</span>
+            <h2 className="projects-title">Recent Work</h2>
+          </div>
+        </div>
 
-        {/* Section label */}
-        <motion.div
-          ref={headingRef}
-          className="projects-heading"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <span className="projects-label">// Projects</span>
-          <h2 className="projects-title">Recent Work</h2>
-        </motion.div>
-
-        {/* Project cards */}
-        <div className="projects-list">
-          {projects.map((project, i) => (
-            <ProjectRow key={project.id} project={project} index={i} />
+        <div ref={trackRef} className="projects-track">
+          {projects.map((project) => (
+            <div key={project.id} className="project-card-horizontal">
+              <ProjectRow project={project} containerAnimation={masterTween} />
+            </div>
           ))}
         </div>
       </div>
