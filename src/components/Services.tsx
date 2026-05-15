@@ -1,7 +1,6 @@
-import { HoverSlider,
-  HoverSliderImage,
-  HoverSliderImageWrap,
-  TextStaggerHover } from "@/components/ui/animated-slideshow"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { HoverSlider, TextStaggerHover } from "@/components/ui/animated-slideshow"
 
   const SLIDES = [
   {
@@ -32,11 +31,13 @@ import { HoverSlider,
     id: "slide-4",
     title: "graphic design",
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1661382011487-cd3d6b1d9dff?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://plus.unsplash.com/premium_photo-1661382011487-cd3d6b1d9dff?q=80&w=1171&auto=format&fit=max&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ]
 
 export function Services() {
+  const [activeIdx, setActiveIdx] = useState(0)
+
   return (
     <section id="services" className="section bg-[var(--bg)]">
       <div className="container">
@@ -45,33 +46,52 @@ export function Services() {
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-24">
             <div className="flex flex-col space-y-4 md:space-y-6">
               {SLIDES.map((slide, index) => (
-                <TextStaggerHover
-                  key={slide.title}
-                  index={index}
-                  className="cursor-pointer text-[clamp(24px,5vw,60px)] font-bold uppercase tracking-tighter text-[var(--text-h)] whitespace-nowrap"
-                  text={slide.title}
-                />
+                <div
+                  key={slide.id}
+                  onMouseEnter={() => setActiveIdx(index)}
+                  className="group"
+                >
+                  <TextStaggerHover
+                    index={index}
+                    className="cursor-pointer text-[clamp(24px,5vw,60px)] font-bold uppercase tracking-tighter text-[var(--text-h)] whitespace-nowrap"
+                    text={slide.title}
+                  />
+                </div>
               ))}
             </div>
-            <div className="relative">
-              <HoverSliderImageWrap
-                className="w-full aspect-[4/3] md:aspect-[4/3] rounded-2xl overflow-hidden bg-white/5"
-                style={{ boxShadow: '0 40px 100px rgba(0, 0, 0, 0.4)' }}
-              >
-                {SLIDES.map((slide, index) => (
-                  <div key={slide.id}>
-                    <HoverSliderImage
-                      index={index}
-                      imageUrl={slide.imageUrl}
-                      src={slide.imageUrl}
-                      alt={slide.title}
-                      className="size-full object-contain p-4 md:p-6"
-                      loading="eager"
-                      decoding="async"
-                    />
-                  </div>
-                ))}
-              </HoverSliderImageWrap>
+
+            <div className="relative w-full flex items-center justify-center">
+              {/* New Custom Image Card */}
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-white/10 shadow-2xl">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={activeIdx}
+                    src={SLIDES[activeIdx].imageUrl}
+                    alt={SLIDES[activeIdx].title}
+                    className="absolute inset-0 block w-full h-full object-cover object-center"
+                    initial={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
+                    transition={{
+                      duration: 0.7,
+                      ease: [0.19, 1, 0.22, 1]
+                    }}
+                  />
+                </AnimatePresence>
+
+                {/* Subtle Overlay Decoration */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-6 left-6">
+                  <motion.div
+                    key={activeIdx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-white/40 text-xs font-mono tracking-widest uppercase"
+                  >
+                    0{activeIdx + 1} / 0{SLIDES.length}
+                  </motion.div>
+                </div>
+              </div>
             </div>
           </div>
         </HoverSlider>

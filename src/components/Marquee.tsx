@@ -52,8 +52,7 @@ export default function Marquee() {
       <div className="marquee-track">
         {itemsList.map((item, i) => (
           <span key={`${item.label}-${i}`} className="marquee-item">
-            <item.Icon size={16} color={item.color} />
-            {item.label}
+            <item.Icon size={32} color={item.color} />
             <span className="marquee-dot" />
           </span>
         ))}
