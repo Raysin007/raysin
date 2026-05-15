@@ -11,17 +11,19 @@ const roles = [
   'Creative Coder',
 ]
 
-const MARQUEE_TEXT = "Raysin  —  Raysin  —  "
-const MARQUEE_DURATION = 25 // Speed of the black CSS text
-const MARQUEE_INVERT_DURATION = 77// Speed of the inverted portrait effect (can be different)
+const MARQUEE_TEXT = "Raysin  —  Raysin  —   "
+const MARQUEE_DURATION = 2 // Speed of the black CSS text
+const MARQUEE_INVERT_DURATION = 41// Speed of the inverted portrait effect (can be different)
 
 // Black text alignment
 const MARQUEE_TOP = "50%"
-const MARQUEE_OFFSET_Y = "-58%"
+const MARQUEE_OFFSET_Y = "-68%"
 
 // Inverted effect alignment
 const INVERT_TOP = "50%"
-const INVERT_OFFSET_Y = "-50%"
+const INVERT_OFFSET_Y = "-60%"
+
+const MARQUEE_UNITS = 10 // Increased to ensure it covers any screen width seamlessly
 
 export default function Hero() {
   const socialsRef  = useRef<HTMLDivElement>(null)
@@ -115,7 +117,7 @@ export default function Hero() {
 
     // Continuous marquee animation
     gsap.to(marqueeTrackRef.current, {
-      xPercent: -100 / 3, // Exactly one unit
+      xPercent: -100 / MARQUEE_UNITS, // Exactly one unit
       duration: MARQUEE_DURATION,
       ease: 'none',
       repeat: -1
@@ -139,9 +141,15 @@ export default function Hero() {
         aria-hidden="true"
       >
         <div ref={marqueeTrackRef} className="hero-marquee-track">
-          <span ref={marqueeUnitRef} className="hero-marquee-text">{MARQUEE_TEXT}</span>
-          <span className="hero-marquee-text">{MARQUEE_TEXT}</span>
-          <span className="hero-marquee-text">{MARQUEE_TEXT}</span>
+          {[...Array(MARQUEE_UNITS)].map((_, i) => (
+            <span
+              key={i}
+              ref={i === 0 ? marqueeUnitRef : null}
+              className="hero-marquee-text"
+            >
+              {MARQUEE_TEXT}
+            </span>
+          ))}
         </div>
       </div>
 
