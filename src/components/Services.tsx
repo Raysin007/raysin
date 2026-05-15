@@ -65,7 +65,7 @@ export function Services() {
                       imageUrl={slide.imageUrl}
                       src={slide.imageUrl}
                       alt={slide.title}
-                      className="size-full object-cover"
+                      className="size-full object-contain p-4 md:p-6"
                       loading="eager"
                       decoding="async"
                     />

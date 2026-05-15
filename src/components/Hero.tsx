@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import ParticleField from './ParticleField'
+import MarqueeInvert from './Marqueeinvert'
 import './Hero.css'
 
 const roles = [
@@ -10,16 +11,39 @@ const roles = [
   'Creative Coder',
 ]
 
+const MARQUEE_TEXT = "Raysin  —  Raysin  —  "
+const MARQUEE_DURATION = 25 // Speed of the black CSS text
+const MARQUEE_INVERT_DURATION = 77// Speed of the inverted portrait effect (can be different)
+
+// Black text alignment
+const MARQUEE_TOP = "50%"
+const MARQUEE_OFFSET_Y = "-58%"
+
+// Inverted effect alignment
+const INVERT_TOP = "50%"
+const INVERT_OFFSET_Y = "-50%"
+
 export default function Hero() {
-  const socialsRef = useRef<HTMLDivElement>(null)
-  const roleRef = useRef<HTMLDivElement>(null)
-  const badgeRef = useRef<HTMLDivElement>(null)
-  const marqueeRef = useRef<HTMLDivElement>(null)
+  const socialsRef  = useRef<HTMLDivElement>(null)
+  const roleRef     = useRef<HTMLDivElement>(null)
+  const badgeRef    = useRef<HTMLDivElement>(null)
+  const marqueeRef  = useRef<HTMLDivElement>(null)
   const portraitRef = useRef<HTMLImageElement>(null)
 
   const [roleText, setRoleText] = useState('')
-  const [roleIdx, setRoleIdx] = useState(0)
-  const [typing, setTyping] = useState(true)
+  const [roleIdx, setRoleIdx]   = useState(0)
+  const [typing, setTyping]     = useState(true)
+
+  // Responsive font size to match CSS clamp(100px, 14vw, 180px)
+  const [fontSize, setFontSize] = useState(
+    Math.min(180, Math.max(100, window.innerWidth * 0.14))
+  )
+  useEffect(() => {
+    const onResize = () =>
+      setFontSize(Math.min(180, Math.max(100, window.innerWidth * 0.14)))
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   const scrollTo = (id: string) =>
     document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -44,6 +68,22 @@ export default function Hero() {
     }
     return () => clearTimeout(timeout)
   }, [roleText, typing, roleIdx])
+
+  const marqueeTrackRef = useRef<HTMLDivElement>(null)
+  const marqueeUnitRef  = useRef<HTMLSpanElement>(null)
+  const [unitWidth, setUnitWidth] = useState(0)
+
+  // Update unit width on resize
+  useEffect(() => {
+    const updateWidth = () => {
+      if (marqueeUnitRef.current) {
+        setUnitWidth(marqueeUnitRef.current.getBoundingClientRect().width)
+      }
+    }
+    updateWidth()
+    window.addEventListener('resize', updateWidth)
+    return () => window.removeEventListener('resize', updateWidth)
+  }, [])
 
   // GSAP entrance
   useEffect(() => {
@@ -72,32 +112,69 @@ export default function Hero() {
       { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' },
       '-=0.3'
     )
+
+    // Continuous marquee animation
+    gsap.to(marqueeTrackRef.current, {
+      xPercent: -100 / 3, // Exactly one unit
+      duration: MARQUEE_DURATION,
+      ease: 'none',
+      repeat: -1
+    }).totalTime(gsap.ticker.time) // Sync with global ticker time
   }, [])
 
   return (
     <section className="hero-v2">
       <ParticleField />
-
-      {/* Grid overlay */}
       <div className="hero-grid-overlay" aria-hidden="true" />
 
-      {/* ── Oversized scrolling name ── */}
-      <div ref={marqueeRef} className="hero-marquee-wrap" style={{ opacity: 0 }} aria-hidden="true">
-        <div className="hero-marquee-track">
-          <span className="hero-marquee-text">Raysin &nbsp;—&nbsp; Raysin &nbsp;—&nbsp; </span>
-          <span className="hero-marquee-text">Raysin &nbsp;—&nbsp; Raysin &nbsp;—&nbsp; </span>
-          <span className="hero-marquee-text">Raysin &nbsp;—&nbsp; Raysin &nbsp;—&nbsp; </span>
+      {/* ── Layer 1: Black CSS marquee (z-index 1, behind portrait) ── */}
+      <div
+        ref={marqueeRef}
+        className="hero-marquee-wrap"
+        style={{
+          opacity: 0,
+          top: MARQUEE_TOP,
+          transform: `translateY(${MARQUEE_OFFSET_Y})`
+        }}
+        aria-hidden="true"
+      >
+        <div ref={marqueeTrackRef} className="hero-marquee-track">
+          <span ref={marqueeUnitRef} className="hero-marquee-text">{MARQUEE_TEXT}</span>
+          <span className="hero-marquee-text">{MARQUEE_TEXT}</span>
+          <span className="hero-marquee-text">{MARQUEE_TEXT}</span>
         </div>
       </div>
 
+      {/* ── Layer 2: Portrait (z-index 2) ── */}
       <img
         ref={portraitRef}
         src="/raysin.png"
-        alt="Rahul"
+        alt="Raysin"
         className="hero-portrait"
         style={{ opacity: 0 }}
       />
 
+      {/*
+        ── Layer 3: Canvas inversion (z-index 3) ──
+
+        MarqueeInvert draws the inverted portrait pixel-for-pixel
+        but ONLY inside the text glyph shapes using canvas compositing
+        (destination-in). Outside the glyphs the canvas is fully
+        transparent, so the black CSS text below shows through perfectly.
+
+        Speed, fontSize, and position mirror the CSS marquee exactly
+        so both layers stay in sync.
+      */}
+      <MarqueeInvert
+        imageSrc="/raysin.png"
+        text={MARQUEE_TEXT}
+        fontSize={fontSize}
+        fontFamily="'Geist Sans', system-ui, -apple-system, sans-serif"
+        duration={MARQUEE_INVERT_DURATION}
+        unitWidth={unitWidth}
+        top={INVERT_TOP}
+        translateY={INVERT_OFFSET_Y}
+      />
 
       {/* ── Social links — bottom left ── */}
       <div ref={socialsRef} className="hero-socials" style={{ opacity: 0 }}>
@@ -124,6 +201,7 @@ export default function Hero() {
         </a>
       </div>
 
+      {/* ── Role block — bottom right ── */}
       <div ref={roleRef} className="hero-role-block" style={{ opacity: 0 }}>
         <div ref={badgeRef} className="hero-badge-inline">
           <span className="hero-badge-dot" />

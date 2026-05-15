@@ -26,7 +26,7 @@ const items = [
 ]
 
 export default function Marquee() {
-  const itemsList = [...items, ...items, ...items]
+  const itemsList = [...items, ...items]
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
