@@ -11,9 +11,9 @@ const roles = [
   'Creative Coder',
 ]
 
-const MARQUEE_TEXT = "Raysin  —  Raysin  —   "
-const MARQUEE_DURATION = 2 // Speed of the black CSS text
-const MARQUEE_INVERT_DURATION = 41// Speed of the inverted portrait effect (can be different)
+const MARQUEE_TEXT = "Raysin  —  Raysin  —  Raysin  —  Raysin  —  Raysin  —  Raysin  — "
+const MARQUEE_DURATION = 50 // Speed of the black CSS text
+const MARQUEE_INVERT_DURATION = 160// Speed of the inverted portrait effect (can be different)
 
 // Black text alignment
 const MARQUEE_TOP = "50%"
@@ -23,7 +23,7 @@ const MARQUEE_OFFSET_Y = "-68%"
 const INVERT_TOP = "50%"
 const INVERT_OFFSET_Y = "-60%"
 
-const MARQUEE_UNITS = 10 // Increased to ensure it covers any screen width seamlessly
+const MARQUEE_UNITS = 1 // Increased to ensure it covers any screen width seamlessly
 
 export default function Hero() {
   const socialsRef  = useRef<HTMLDivElement>(null)
