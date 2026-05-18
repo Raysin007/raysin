@@ -59,40 +59,58 @@ function ProjectRow({ project, containerAnimation }: ProjectRowProps) {
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!containerAnimation || !rowRef.current) return
+    if (!rowRef.current) return
 
     const ctx = gsap.context(() => {
-      // Reveal the image from the right
-      gsap.fromTo(imageRef.current,
-        { x: 100, opacity: 0, scale: 0.9 },
-        {
-          x: 0, opacity: 1, scale: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: rowRef.current,
-            containerAnimation: containerAnimation,
-            start: "left 90%",
-            end: "left 20%",
-            scrub: true,
+      if (containerAnimation) {
+        // Reveal the image from the right
+        gsap.fromTo(imageRef.current,
+          { x: 100, opacity: 0, scale: 0.9 },
+          {
+            x: 0, opacity: 1, scale: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: rowRef.current,
+              containerAnimation: containerAnimation,
+              start: "left 90%",
+              end: "left 20%",
+              scrub: true,
+            }
           }
-        }
-      )
+        )
 
-      // Reveal the content with a slight offset
-      gsap.fromTo(contentRef.current,
-        { x: 50, opacity: 0 },
-        {
-          x: 0, opacity: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: rowRef.current,
-            containerAnimation: containerAnimation,
-            start: "left 80%",
-            end: "left 30%",
-            scrub: true,
+        // Reveal the content with a slight offset
+        gsap.fromTo(contentRef.current,
+          { x: 50, opacity: 0 },
+          {
+            x: 0, opacity: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: rowRef.current,
+              containerAnimation: containerAnimation,
+              start: "left 80%",
+              end: "left 30%",
+              scrub: true,
+            }
           }
-        }
-      )
+        )
+      } else {
+        // Mobile vertical scroll reveal (fade up)
+        gsap.fromTo(rowRef.current,
+          { y: 60, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.0,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: rowRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      }
     }, rowRef)
 
     return () => ctx.revert()

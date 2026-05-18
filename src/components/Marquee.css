@@ -61,3 +61,16 @@
   right: 0;
   background: linear-gradient(-90deg, var(--bg-2) 0%, transparent 100%);
 }
+
+@media (max-width: 768px) {
+  .marquee-section::before,
+  .marquee-section::after {
+    width: 60px;
+  }
+  .marquee-item {
+    padding: 0 20px;
+  }
+  .marquee-dot {
+    margin-left: 20px;
+  }
+}

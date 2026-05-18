@@ -5,6 +5,14 @@ import './About.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const SplitText = ({ children, className = "" }: { children: string, className?: string }) => (
+  <span className={className}>
+    {children.split("").map((char, i) => (
+      <span key={i} className="char">{char}</span>
+    ))}
+  </span>
+)
+
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
@@ -55,17 +63,20 @@ export default function About() {
     document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const aboutText = "I'm a multidisciplinary developer from Darjeeling who helps creators to build engaging online experiences."
-
   return (
     <section ref={sectionRef} id="about" className="about-v2">
       <div className="container">
         <span className="about-label">// Intro</span>
 
         <h2 ref={headingRef} className="about-title">
-          {aboutText.split("").map((char, i) => (
-            <span key={i} className="char">{char}</span>
-          ))}
+          <SplitText>I'm a </SplitText>
+          <SplitText className="text-highlight">multidisciplinary developer</SplitText>
+          <SplitText> from </SplitText>
+          <SplitText className="text-highlight">Darjeeling</SplitText>
+          <SplitText> who helps creators </SplitText>
+          <br className="desktop-br" />
+          <SplitText>to build </SplitText>
+          <SplitText className="text-highlight">engaging online experiences</SplitText>.
         </h2>
 
         <div ref={bodyRef} className="about-body">

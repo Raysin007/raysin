@@ -35,10 +35,18 @@
   margin-bottom: 80px;
 }
 
+.text-highlight {
+  color: #ff4d00;
+}
+
 /* Individual characters for scroll reveal */
 .char {
   display: inline-block;
   white-space: pre; /* Preserves spaces between words */
+}
+
+.desktop-br {
+  display: inline;
 }
 
 .about-body {
@@ -102,4 +110,5 @@
   .about-v2 { padding: 100px 0; }
   .about-label { margin-bottom: 32px; }
   .about-title { margin-bottom: 48px; }
+  .desktop-br { display: none; }
 }

@@ -49,6 +49,7 @@ export function Services() {
                 <div
                   key={slide.id}
                   onMouseEnter={() => setActiveIdx(index)}
+                  onClick={() => setActiveIdx(index)}
                   className="group"
                 >
                   <TextStaggerHover

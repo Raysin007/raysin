@@ -36,13 +36,18 @@ export default function Hero() {
   const [roleIdx, setRoleIdx]   = useState(0)
   const [typing, setTyping]     = useState(true)
 
-  // Responsive font size to match CSS clamp(100px, 14vw, 180px)
-  const [fontSize, setFontSize] = useState(
-    Math.min(180, Math.max(100, window.innerWidth * 0.14))
-  )
+  // Responsive font size to match CSS clamp(100px, 14vw, 180px) on desktop, and clamp(70px, 20vw, 100px) on mobile (<= 768px)
+  const getClampedFontSize = (width: number) => {
+    if (width <= 768) {
+      return Math.min(100, Math.max(70, width * 0.20))
+    }
+    return Math.min(180, Math.max(100, width * 0.14))
+  }
+
+  const [fontSize, setFontSize] = useState(() => getClampedFontSize(window.innerWidth))
+
   useEffect(() => {
-    const onResize = () =>
-      setFontSize(Math.min(180, Math.max(100, window.innerWidth * 0.14)))
+    const onResize = () => setFontSize(getClampedFontSize(window.innerWidth))
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [])
@@ -191,13 +196,13 @@ export default function Hero() {
             <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/>
             <circle cx="4" cy="4" r="2"/>
           </svg>
-          LinkedIn
+          <span>LinkedIn</span>
         </a>
         <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hero-social-link">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
-          Twitter
+          <span>Twitter</span>
         </a>
         <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hero-social-link">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -205,7 +210,7 @@ export default function Hero() {
             <circle cx="12" cy="12" r="4"/>
             <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
           </svg>
-          Instagram
+          <span>Instagram</span>
         </a>
       </div>
 
