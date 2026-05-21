@@ -45,6 +45,10 @@ export default function MarqueeInvert({
     img.src = imageSrc
     imgRef.current = img
 
+    // Pre-create offscreen canvas elements once to prevent GC churn in tick loop
+    const mask = document.createElement('canvas')
+    const inv = document.createElement('canvas')
+
     const resize = () => {
       const dpr = window.devicePixelRatio || 1
       const rect = canvas.getBoundingClientRect()
@@ -54,6 +58,12 @@ export default function MarqueeInvert({
       canvas.width = w * dpr
       canvas.height = h * dpr
       ctx.scale(dpr, dpr)
+
+      // Also size offscreen canvases
+      mask.width = w * dpr
+      mask.height = h * dpr
+      inv.width = w * dpr
+      inv.height = h * dpr
     }
     resize()
     window.addEventListener('resize', resize)
@@ -67,11 +77,16 @@ export default function MarqueeInvert({
       const w = rect.width
       const h = fontSize
 
-      // Update canvas size if it changed (though usually resize listener handles it)
+      // Sync offscreen canvas sizes if they are not matching the master canvas
       if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
         canvas.width = w * dpr
         canvas.height = h * dpr
         ctx.scale(dpr, dpr)
+
+        mask.width = w * dpr
+        mask.height = h * dpr
+        inv.width = w * dpr
+        inv.height = h * dpr
       }
 
       ctx.clearRect(0, 0, w, h)
@@ -89,10 +104,9 @@ export default function MarqueeInvert({
       offsetRef.current = (elapsed * speed) % unitWidth
 
       // ── Step 1: Draw text mask ──
-      const mask = document.createElement('canvas')
-      mask.width = w * dpr
-      mask.height = h * dpr
       const mCtx = mask.getContext('2d')!
+      mCtx.save()
+      mCtx.clearRect(0, 0, mask.width, mask.height)
       mCtx.scale(dpr, dpr)
       mCtx.fillStyle = '#000'
       mCtx.font = `800 ${fontSize}px ${fontFamily}`
@@ -101,19 +115,18 @@ export default function MarqueeInvert({
       mCtx.textBaseline = 'middle'
 
       // Tile text to cover full width + overlap for smooth loop
-      // We use unitWidth here to ensure the tiling matches the CSS track exactly
       let x = -offsetRef.current
       while (x < w + unitWidth) {
         mCtx.fillText(text, x, h / 2)
         x += unitWidth
       }
+      mCtx.restore()
 
       // ── Step 2: Draw inverted portrait ──
       if (imgRef.current?.complete) {
-        const inv = document.createElement('canvas')
-        inv.width = w * dpr
-        inv.height = h * dpr
         const iCtx = inv.getContext('2d')!
+        iCtx.save()
+        iCtx.clearRect(0, 0, inv.width, inv.height)
         iCtx.scale(dpr, dpr)
         iCtx.filter = 'invert(1) grayscale(1)'
 
@@ -136,7 +149,6 @@ export default function MarqueeInvert({
         iCtx.drawImage(img, imgX, localY, imgW, imgH)
 
         // ── Step 3: Match portrait bottom fade (Hero.css 18% mask) ──
-        // We apply a gradient mask to the inverted portrait in the same spot
         const fadeH = imgH * 0.18
         const grad = iCtx.createLinearGradient(0, localY + imgH, 0, localY + imgH - fadeH)
         grad.addColorStop(0, 'rgba(0,0,0,0)')
@@ -149,6 +161,7 @@ export default function MarqueeInvert({
         // ── Step 4: Clip inverted portrait through the text mask ──
         iCtx.globalCompositeOperation = 'destination-in'
         iCtx.drawImage(mask, 0, 0, w, h)
+        iCtx.restore()
 
         // ── Step 5: Output ──
         ctx.drawImage(inv, 0, 0, w, h)

@@ -19,7 +19,8 @@ export default function ParticleField() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const colors = ['rgba(251,92,60,', 'rgba(212,61,33,', 'rgba(0,0,0,']
+    // Use active accent colors and avoid invisible black particles
+    const colors = ['rgba(251,92,60,', 'rgba(212,61,33,', 'rgba(251,92,60,']
     const particles: Particle[] = []
     let animId: number
     let W = 0, H = 0
@@ -60,15 +61,20 @@ export default function ParticleField() {
 
       // Draw lines between nearby particles
       for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i]
         for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 100) {
+          const p2 = particles[j]
+          const dx = p1.x - p2.x
+          const dy = p1.y - p2.y
+          const distSq = dx * dx + dy * dy
+
+          // Performance optimization: Avoid expensive Math.sqrt for particles far apart (100px threshold -> 10000px squared)
+          if (distSq < 10000) {
+            const dist = Math.sqrt(distSq)
             ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(0,0,0,${0.05 * (1 - dist / 100)})`
+            ctx.moveTo(p1.x, p1.y)
+            ctx.lineTo(p2.x, p2.y)
+            ctx.strokeStyle = `rgba(251,92,60,${0.03 * (1 - dist / 100)})`
             ctx.lineWidth = 0.5
             ctx.stroke()
           }
