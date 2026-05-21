@@ -32,7 +32,12 @@ export default function Navbar() {
 
   const handleNav = (href: string) => {
     setOpen(false)
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    const lenis = (window as any).lenis
+    if (lenis) {
+      lenis.scrollTo(href)
+    } else {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
@@ -43,7 +48,12 @@ export default function Navbar() {
           className="navbar-logo"
           onClick={(e) => {
             e.preventDefault()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
+            const lenis = (window as any).lenis
+            if (lenis) {
+              lenis.scrollTo(0)
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
           }}
         >
           Ray<span>sin</span>

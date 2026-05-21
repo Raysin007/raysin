@@ -9,18 +9,43 @@ import Projects from './components/Projects'
 import { Services } from './components/Services'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Lenis from 'lenis'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const glowRef = useRef<HTMLDivElement>(null)
 
+  // Initialize Lenis smooth scroll
   useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight
-      setScrollProgress(h > 0 ? window.scrollY / h : 0)
+    const lenis = new Lenis({
+      duration: 1.6, // Slower duration for a luxurious, floating smooth effect
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Premium easeOutExpo scroll curve
+      smoothWheel: true,
+    })
+    ;(window as any).lenis = lenis
+
+    // Sync Lenis scroll with ScrollTrigger and update progress bar
+    lenis.on('scroll', (e) => {
+      ScrollTrigger.update()
+      setScrollProgress(e.progress)
+    })
+
+    // Sync GSAP ticker with Lenis raf
+    const updateLenis = (time: number) => {
+      lenis.raf(time * 1000)
     }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    gsap.ticker.add(updateLenis)
+    gsap.ticker.lagSmoothing(0)
+
+    return () => {
+      lenis.destroy()
+      gsap.ticker.remove(updateLenis)
+      ;(window as any).lenis = null
+    }
   }, [])
 
   useEffect(() => {

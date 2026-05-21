@@ -60,7 +60,12 @@ export default function About() {
   }, [])
 
   const scrollToProjects = () => {
-    document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
+    const lenis = (window as any).lenis
+    if (lenis) {
+      lenis.scrollTo('#projects')
+    } else {
+      document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
