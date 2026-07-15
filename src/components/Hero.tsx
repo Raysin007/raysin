@@ -12,16 +12,11 @@ const roles = [
 ]
 
 const MARQUEE_TEXT = "Raysin  —  Raysin  —  Raysin  —  Raysin  —  Raysin  —  Raysin  — "
-const MARQUEE_DURATION = 50 // Speed of the black CSS text
-const MARQUEE_INVERT_DURATION = 160// Speed of the inverted portrait effect (can be different)
+const MARQUEE_DURATION = 50 // Shared speed for both marquee layers (must be identical to stay in sync)
 
-// Black text alignment
-const MARQUEE_TOP = "50%"
-const MARQUEE_OFFSET_Y = "-68%"
-
-// Inverted effect alignment
-const INVERT_TOP = "50%"
-const INVERT_OFFSET_Y = "-60%"
+// Vertical alignment offset: 68% of the text height, applied via calc() in pixels
+// so GSAP entrance animation can't interfere with the position.
+const MARQUEE_OFFSET_RATIO = 0.68
 
 const MARQUEE_UNITS = 1 // Increased to ensure it covers any screen width seamlessly
 
@@ -92,7 +87,7 @@ export default function Hero() {
     return () => window.removeEventListener('resize', updateWidth)
   }, [])
 
-  // GSAP entrance
+  // GSAP entrance (runs once)
   useEffect(() => {
     const tl = gsap.timeline({ delay: 0.4 })
     tl.fromTo(marqueeRef.current,
@@ -119,15 +114,23 @@ export default function Hero() {
       { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' },
       '-=0.3'
     )
-
-    // Continuous marquee animation
-    gsap.to(marqueeTrackRef.current, {
-      xPercent: -100 / MARQUEE_UNITS, // Exactly one unit
-      duration: MARQUEE_DURATION,
-      ease: 'none',
-      repeat: -1
-    }).totalTime(gsap.ticker.time) // Sync with global ticker time
   }, [])
+
+  // Continuous marquee animation — driven by gsap.ticker directly
+  // so it uses the exact same time-base and speed formula as MarqueeInvert.
+  useEffect(() => {
+    const tickMarquee = () => {
+      if (!marqueeTrackRef.current || unitWidth <= 0) return
+      const speed = unitWidth / MARQUEE_DURATION           // px per second
+      const offset = (gsap.ticker.time * speed) % unitWidth // same formula as canvas
+      marqueeTrackRef.current.style.transform = `translateX(${-offset}px)`
+    }
+    gsap.ticker.add(tickMarquee)
+
+    return () => {
+      gsap.ticker.remove(tickMarquee)
+    }
+  }, [unitWidth])
 
   return (
     <section className="hero-v2">
@@ -140,8 +143,7 @@ export default function Hero() {
         className="hero-marquee-wrap"
         style={{
           opacity: 0,
-          top: MARQUEE_TOP,
-          transform: `translateY(${MARQUEE_OFFSET_Y})`
+          top: `calc(50% - ${MARQUEE_OFFSET_RATIO * fontSize}px)`,
         }}
         aria-hidden="true"
       >
@@ -183,10 +185,9 @@ export default function Hero() {
         text={MARQUEE_TEXT}
         fontSize={fontSize}
         fontFamily="'Geist Sans', system-ui, -apple-system, sans-serif"
-        duration={MARQUEE_INVERT_DURATION}
+        duration={MARQUEE_DURATION}
         unitWidth={unitWidth}
-        top={INVERT_TOP}
-        translateY={INVERT_OFFSET_Y}
+        top={`calc(50% - ${MARQUEE_OFFSET_RATIO * fontSize}px)`}
       />
 
       {/* ── Social links — bottom left ── */}

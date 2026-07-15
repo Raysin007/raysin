@@ -8,11 +8,12 @@ gsap.registerPlugin(ScrollTrigger)
 const projects = [
   {
     id: 1,
-    year: '2024',
-    title: 'Formula Vintage',
+    year: '2026',
+    title: 'Raysin',
     description:
-      'For Formula Vintage, we crafted a design that honors the rich heritage of classic cars while adding a modern twist. Combining timeless elegance with sleek, contemporary elements.',
-    tags: ['Landing Page', 'Mobile App', 'Redesign'],
+      'For this project, I focused on creating a clean and engaging digital experience that balances aesthetics with functionality. Every design decision was made to ensure smooth interaction, modern visuals, and a strong brand presence.',
+    tags: ['Landing Page', 'Website Design', 'Brand Identity'],
+    video: '/portfolio.mp4',
     image: 'https://framerusercontent.com/images/La32y794CcZboMk8PScVdQ2O5Rk.png',
     href: '#',
   },
@@ -23,6 +24,7 @@ const projects = [
     description:
       'For Sprey Zest, we took a playful, bold approach to packaging and branding. Instead of following the typical fresh or clean aesthetic, we infused energy and personality into every detail.',
     tags: ['Website Design', 'Branding'],
+    video: '/sprey-zest.mp4',
     image: 'https://framerusercontent.com/images/BUMWJfM7FAxHoEYXhMjW881wM.png',
     href: '#',
   },
@@ -33,6 +35,7 @@ const projects = [
     description:
       'For Super-Pro, we redefined what it means to be a professional by focusing on the mindset and determination behind success, not just the achievements.',
     tags: ['Desktop App', 'Mobile App'],
+    video: '/super-pro.mp4',
     image: 'https://framerusercontent.com/images/VQY4WQ8E6fx261RhsoqM17bkt9E.png',
     href: '#',
   },
@@ -43,6 +46,7 @@ const projects = [
     description:
       'We redefined the concept of modern living by creating a design that challenges conventional boundaries. Focusing on comfort, functionality, and unexpected elements.',
     tags: ['Mobile App', 'Branding', 'Website Design'],
+    video: '/architech-buildings.mp4',
     image: 'https://framerusercontent.com/images/Z1w2O7B5xsN3Y7XkKgBi9kFOgps.jpg',
     href: '#',
   },
@@ -120,7 +124,19 @@ function ProjectRow({ project, containerAnimation }: ProjectRowProps) {
     <div ref={rowRef} className="project-card">
       <div className="project-card__inner">
         <div ref={imageRef} className="project-card__image-container">
-          <img src={project.image} alt={project.title} className="project-card__image" />
+          {project.video ? (
+            <video
+              src={project.video}
+              poster={project.image}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="project-card__image"
+            />
+          ) : (
+            <img src={project.image} alt={project.title} className="project-card__image" />
+          )}
         </div>
 
         <div ref={contentRef} className="project-card__content">

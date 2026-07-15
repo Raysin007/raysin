@@ -8,8 +8,7 @@ interface Props {
   fontFamily: string    // e.g. "Geist, sans-serif"
   duration: number      // seconds for one full loop, match CSS animation-duration
   unitWidth: number     // px, measured from CSS span for perfect sync
-  top: string           // CSS top value, e.g. "50%"
-  translateY: string    // e.g. "-58%"
+  top: string           // CSS top value, e.g. "calc(50% - 100px)"
 }
 
 /**
@@ -28,7 +27,6 @@ export default function MarqueeInvert({
   duration,
   unitWidth,
   top,
-  translateY,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement | null>(null)
@@ -182,10 +180,10 @@ export default function MarqueeInvert({
       style={{
         position: 'absolute',
         top,
-        transform: `translateY(${translateY})`,
         left: 0,
         right: 0,
         width: '100%',
+        height: fontSize,
         pointerEvents: 'none',
         userSelect: 'none',
         zIndex: 3,
