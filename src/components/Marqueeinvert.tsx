@@ -9,6 +9,7 @@ interface Props {
   duration: number      // seconds for one full loop, match CSS animation-duration
   unitWidth: number     // px, measured from CSS span for perfect sync
   top: string           // CSS top value, e.g. "calc(50% - 100px)"
+  topOffsetPx: number   // px subtracted from 50% in `top` — must match Hero's MARQUEE_OFFSET_RATIO * fontSize
 }
 
 /**
@@ -27,6 +28,7 @@ export default function MarqueeInvert({
   duration,
   unitWidth,
   top,
+  topOffsetPx,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement | null>(null)
@@ -110,12 +112,25 @@ export default function MarqueeInvert({
       mCtx.font = `800 ${fontSize}px ${fontFamily}`
       // @ts-ignore
       mCtx.letterSpacing = "-0.04em"
-      mCtx.textBaseline = 'middle'
+
+      // Match CSS line-height: 1 exactly: the line box is fontSize tall and the
+      // baseline sits at halfLeading + ascent. Canvas 'middle' centers the em
+      // square instead, which lands a few px higher than the CSS text.
+      const metrics = mCtx.measureText(text)
+      let baselineY = h / 2
+      if (metrics.fontBoundingBoxAscent !== undefined) {
+        const asc = metrics.fontBoundingBoxAscent
+        const desc = metrics.fontBoundingBoxDescent
+        baselineY = (h - (asc + desc)) / 2 + asc
+        mCtx.textBaseline = 'alphabetic'
+      } else {
+        mCtx.textBaseline = 'middle'
+      }
 
       // Tile text to cover full width + overlap for smooth loop
       let x = -offsetRef.current
       while (x < w + unitWidth) {
-        mCtx.fillText(text, x, h / 2)
+        mCtx.fillText(text, x, baselineY)
         x += unitWidth
       }
       mCtx.restore()
@@ -139,8 +154,8 @@ export default function MarqueeInvert({
         // Horizontal center
         const imgX = (w - imgW) / 2
 
-        // Vertical position alignment:
-        const marqueeTopY = vh * 0.5 - (fontSize * 0.58)
+        // Vertical position alignment — mirrors Hero's top: calc(50% - topOffsetPx)
+        const marqueeTopY = vh * 0.5 - topOffsetPx
         const portraitTopY = vh - imgH
         const localY = portraitTopY - marqueeTopY
 
@@ -172,7 +187,7 @@ export default function MarqueeInvert({
       gsap.ticker.remove(update)
       window.removeEventListener('resize', resize)
     }
-  }, [imageSrc, text, fontSize, fontFamily, duration, unitWidth])
+  }, [imageSrc, text, fontSize, fontFamily, duration, unitWidth, topOffsetPx])
 
   return (
     <canvas

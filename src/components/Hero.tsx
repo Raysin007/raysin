@@ -188,6 +188,7 @@ export default function Hero() {
         duration={MARQUEE_DURATION}
         unitWidth={unitWidth}
         top={`calc(50% - ${MARQUEE_OFFSET_RATIO * fontSize}px)`}
+        topOffsetPx={MARQUEE_OFFSET_RATIO * fontSize}
       />
 
       {/* ── Social links — bottom left ── */}

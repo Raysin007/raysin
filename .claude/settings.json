@@ -1,8 +1,0 @@
-{
-  "hasCompletedOnboarding": true,
-  "env": {
-    "ANTHROPIC_BASE_URL": "http://127.0.0.1:8080",
-    "ANTHROPIC_API_KEY": "test"
-  },
-  "model": "claude-sonnet-4-6"
-}

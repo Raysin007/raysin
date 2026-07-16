@@ -60,7 +60,8 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
+  /* Horizontal centering (translateX(-50%)) is applied by GSAP via xPercent: -50
+     in Hero.tsx — do NOT add a CSS transform here or the two will stack. */
   height: 105%;
   max-height: 900px;
   width: auto;
@@ -198,10 +199,6 @@
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-  .hero-marquee-wrap {
-    /* top is set via inline calc() in Hero.tsx — no CSS transform needed */
-  }
-
   .hero-marquee-text {
     font-size: clamp(70px, 20vw, 100px);
   }
