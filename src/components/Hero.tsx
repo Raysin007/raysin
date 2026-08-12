@@ -20,7 +20,11 @@ const MARQUEE_OFFSET_RATIO = 0.68
 
 const MARQUEE_UNITS = 1 // Increased to ensure it covers any screen width seamlessly
 
-export default function Hero() {
+interface HeroProps {
+  startAnimation: boolean
+}
+
+export default function Hero({ startAnimation }: HeroProps) {
   const socialsRef  = useRef<HTMLDivElement>(null)
   const roleRef     = useRef<HTMLDivElement>(null)
   const badgeRef    = useRef<HTMLDivElement>(null)
@@ -89,7 +93,8 @@ export default function Hero() {
 
   // GSAP entrance (runs once)
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.4 })
+    if (!startAnimation) return
+    const tl = gsap.timeline({ delay: 0.2 })
     tl.fromTo(marqueeRef.current,
       { opacity: 0, scale: 0.96 },
       { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out' }
@@ -114,7 +119,7 @@ export default function Hero() {
       { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' },
       '-=0.3'
     )
-  }, [])
+  }, [startAnimation])
 
   // Continuous marquee animation — driven by gsap.ticker directly
   // so it uses the exact same time-base and speed formula as MarqueeInvert.
@@ -163,7 +168,7 @@ export default function Hero() {
       {/* ── Layer 2: Portrait (z-index 2) ── */}
       <img
         ref={portraitRef}
-        src="/raysin.png"
+        src="/raysin.webp"
         alt="Raysin"
         className="hero-portrait"
         style={{ opacity: 0 }}
@@ -181,7 +186,7 @@ export default function Hero() {
         so both layers stay in sync.
       */}
       <MarqueeInvert
-        imageSrc="/raysin.png"
+        imageSrc="/raysin.webp"
         text={MARQUEE_TEXT}
         fontSize={fontSize}
         fontFamily="'Geist Sans', system-ui, -apple-system, sans-serif"

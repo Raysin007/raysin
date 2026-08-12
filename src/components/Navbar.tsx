@@ -8,21 +8,26 @@ const links = [
   { label: 'Work', href: '#projects' },
 ]
 
-export default function Navbar() {
+interface NavbarProps {
+  startAnimation: boolean
+}
+
+export default function Navbar({ startAnimation }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
+    if (!startAnimation) return
     const ctx = gsap.context(() => {
       gsap.fromTo(
         navRef.current,
         { y: -60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.3 }
+        { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.2 }
       )
     })
     return () => ctx.revert()
-  }, [])
+  }, [startAnimation])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100)

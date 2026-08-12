@@ -12,11 +12,13 @@ import Footer from './components/Footer'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
+import Loader from './components/Loader'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
   const glowRef = useRef<HTMLDivElement>(null)
 
   // Initialize Lenis smooth scroll
@@ -27,6 +29,10 @@ export default function App() {
       smoothWheel: true,
     })
     ;(window as any).lenis = lenis
+
+    if (isLoading) {
+      lenis.stop()
+    }
 
     // Sync Lenis scroll with ScrollTrigger and update progress bar
     lenis.on('scroll', (e) => {
@@ -143,15 +149,28 @@ export default function App() {
     }
   }, [])
 
+  // Synchronize Lenis scroll state with isLoading state changes
+  useEffect(() => {
+    const lenis = (window as any).lenis
+    if (lenis) {
+      if (isLoading) {
+        lenis.stop()
+      } else {
+        lenis.start()
+      }
+    }
+  }, [isLoading])
+
   return (
     <>
+      {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
       <div
         className="scroll-progress"
         style={{ transform: `scaleX(${scrollProgress})` }}
       />
       <div ref={glowRef} className="cursor-glow" />
-      <Navbar />
-      <Hero />
+      <Navbar startAnimation={!isLoading} />
+      <Hero startAnimation={!isLoading} />
       <About />
       <Marquee />
       <Services />
